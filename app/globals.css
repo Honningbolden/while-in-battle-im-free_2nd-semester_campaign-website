@@ -2,32 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url(https://use.typekit.net/lpw3gsy.css);
+
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 252, 252, 252;
   --background-end-rgb: 255, 255, 255;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
+  min-height: 100vh;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.title-type {
+  font-family: "quincy-cf", serif;
+  /* font-weight: 500; */
+  font-style: italic;
+  letter-spacing: -3%;
+  font-size: 89;
+}
+
+.subtitle-type {
+  font-family: "quinn-text", serif;
+  /* font-weight: 400; */
+  font-style: italic;
+  letter-spacing: 12%;
+}
+
+.body-text {
+  font-family: "quincy-cf", serif;
+  /* font-weight: 400; */
+  font-style: italic;
+}
+
+.banner-text {
+  font-family: "quincy-cf", serif;
+  /* font-weight: 800; */
+  font-style: italic;
+}
+
+.button-text {
+  font-family: "quincy-cf", serif;
+  /* font-weight: 900; */
+  font-style: italic;
 }
