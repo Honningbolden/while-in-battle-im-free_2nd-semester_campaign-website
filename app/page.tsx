@@ -1,7 +1,6 @@
 import HeroSection from "./Sections/heroSection";
 import TicketInformation from "./Sections/ticketInformation";
 import TeaserDescription from "./Sections/teaserDescription";
-import InformationOverlay from "./Sections/informationOverlay";
 import AboutSection from "./Sections/AboutSection";
 
 
@@ -22,11 +21,10 @@ export default async function Home() {
   return (
     <>
       <main>
-        <InformationOverlay />
+        <AboutSection aboutContent={aboutContent} />
         <HeroSection />
         <TicketInformation content={ticketInformation} />
         <TeaserDescription />
-        <AboutSection aboutContent={aboutContent} />
       </main>
     </>
   );
