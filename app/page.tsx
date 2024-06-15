@@ -1,13 +1,27 @@
 import HeroSection from "./Sections/hero";
-import InformationOverlay from "./Sections/infoOverlay";
+import TicketInformation from "./Sections/ticketInformation";
+import TeaserDescription from "./Sections/teaserDescription";
 
-export default function Home() {
+
+async function fetchContentJSON() {
+  const baseUrl = 'http://localhost:3000';
+  const res = await fetch(`${baseUrl}/cms/content.json`);
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error('Failed to fetch content');
+  }
+  return data;
+}
+
+export default async function Home() {
+  const { ticketInformation } = await fetchContentJSON();
 
   return (
     <>
-      <InformationOverlay />
       <main>
         <HeroSection />
+        <TicketInformation content={ticketInformation}/>
+        <TeaserDescription/>
       </main>
     </>
   );

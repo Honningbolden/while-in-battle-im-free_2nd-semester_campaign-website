@@ -1,29 +1,42 @@
 import { useState, RefObject, useEffect } from "react";
 import { useMotionValue, useSpring, frame } from "framer-motion";
 
-const spring = { damping: 3, stiffness: 50, restDelta: 0.001 };
+const spring = { damping: 10, stiffness: 50, restDelta: 0.001 };
 
 export function useFollowPointer(ref: RefObject<HTMLElement>) {
   const xPoint = useMotionValue(0);
   const yPoint = useMotionValue(0);
   const x = useSpring(xPoint, spring);
   const y = useSpring(yPoint, spring);
+  const maxDistance = 200;
 
   useEffect(() => {
     if (!ref.current) return;
 
-    const handlePoinerMove = ({ clientX, clientY }: MouseEvent) => {
+    const handlePointerMove = ({ clientX, clientY }: MouseEvent) => {
       const element = ref.current!;
+      const elementCenterX = element.offsetLeft + element.offsetWidth/2;
+      const elementCenterY = element.offsetTop + element.offsetHeight/2;
+
+      const deltaX = clientX - elementCenterX;
+      const deltaY = clientY - elementCenterY;
+      const dist = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+
+      console.log("dist", dist);
+
+      const angle = Math.atan2(deltaY, deltaX);
+      const newX = Math.cos(angle) * dist;
+      const newY = Math.sin(angle) * dist;
 
       frame.read(() => {
-        xPoint.set(clientX - element.offsetLeft - element.offsetWidth / 2);
-        yPoint.set(clientY - element.offsetTop - element.offsetWidth / 2);
+        xPoint.set(newX);
+        yPoint.set(newY);
       });
     };
 
-    window.addEventListener("pointermove", handlePoinerMove);
+    window.addEventListener("pointermove", handlePointerMove);
 
-    return () => window.removeEventListener("pointermove", handlePoinerMove);
+    return () => window.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
   return { x, y };
