@@ -1,10 +1,9 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionValue, useScroll, useSpring, useTransform, useVelocity } from "framer-motion";
 import { useRef } from "react"
 
 export default function TeaserDescription() {
-
   return (
     <>
       <section className="h-screen flex flex-col justify-center items-center">
@@ -18,9 +17,6 @@ export default function TeaserDescription() {
             <p className="body-text text-xl" >20 kroppe i konstant bevægelse skaber et nomadisk og menneskeligt ritual, der insisterer på, at vi er en del af den samme uendelige krop, og at vi sætter dens puls fri.</p>
           </motion.div>
         </div>
-      </section>
-      <section className="h-screen">
-
       </section>
     </>
   )

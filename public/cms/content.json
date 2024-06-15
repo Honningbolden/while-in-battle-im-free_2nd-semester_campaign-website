@@ -5,5 +5,53 @@
     "length": "1 time & 30 minutter",
     "price": "Gratis",
     "callToAction": "Reservér siddeplads"
-  }
+  },
+  "aboutContent": [
+    {
+      "title": "Hooman Sharifi",
+      "articles": [
+        {
+          "title": "Koreograf Hooman Sharifi",
+          "paragraphs": [
+            "Sharifi er født i Teheran i 1973 og kom alene til Norge som 15-årig. Han begyndte sin dansekarriere som teenager med hiphop og fortsatte senere med klassisk og moderne ballet og har en uddannelse i koreografi fra Oslo National Academy of the Arts.",
+            "Han er særligt interesseret i brydningspunktet mellem dans, teater og billedkunst. I 2000 grundlagde han sit eget kompagni, Impure Company, som fokuserer på samfundsengagement, og som siden da har skabt over 30 koreografiske værker.",
+            "Sharifis bevægelsessprog er fysisk udmattende, intenst og kraftfuldt og udforsker strukturer bag hierarkier, magt, politiske systemer og vold. 2014-18 var han kunstnerisk leder af Norges nationalkompagni for samtidsdans, Carte Blanche. Sharifi samarbejder med mange store institutioner, og hans værker har fået stor succes internationalt."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Forestillingen",
+      "articles": [
+        {
+          "title": "20 dansende kroppe besætter en plads i byen",
+          "paragraphs": [
+            "While in battle I’m free, never free to rest er en sjældent livsbekræftende strøm af kollektivets kraft. Det er uforudsigeligt og magisk, når 10 street-dansere møder 10 dansere fra det anerkendte svenske kompagni Cullberg på en af byens mest mangfoldige pladser.",
+            "Den iransk-fødte koreograf Hooman Sharifi har skabt et ganske særligt møde mellem dansere – mellem mennesker – med vidt forskellig baggrund. De taler hver deres (krops)sprog, har hver deres etnicitet, nationalitet, kultur, men deler den Jord, vi har til fælles."
+          ]
+        },
+        {
+          "title": "Er livet en kamp på liv og død?",
+          "paragraphs": [
+            "Eller en kraftfuld dansefedt, hvis vi bare sætter kroppen fri?",
+            "Forestillingens titel er et citat af medborgerrettighedsaktivisten James Baldwin. While in battle I’m free, never free to rest.",
+            "For den kompromisløse koreograf Sharifi er kunst altid politisk. I en konfliktfyldt tid, hvor grupperinger brydes, slås og går i krig, sætter han ind med et mesterværk om kollektivets sammenhængs- og forandringskraft. Om, hvordan der ud af vores forskelle opstår nye muligheder, hvis vi giver plads. Om, hvordan vi alle kæmper for at være frie i verden. I fællesskab, men med hver vores stemme.",
+            "Danserne hvirvler rundt mellem hinanden i intense, sveddryppende koreografier, mens vi som publikum bliver trukket ind i deres univers. Vi omringer danserne, mens det dragende soundtrack omslutter os. Neda Sanai har skabt sin egen, særlige musik ved at sample et unikt lydtæppe af iransk folkemusik.",
+            "20 kroppe i konstant bevægelse skaber et nomadisk og menneskeligt ritual, der insisterer på, at vi er en del af den samme uendelige krop, og at vi sætter dens puls fri."
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Om Cullberg",
+      "articles": [
+        {
+          "title": "Om Cullberg",
+          "paragraphs": [
+            "Cullberg er et internationalt anerkendt dansekompagni grundlagt i 1967 med base i Stockholm – en historisk institution i svensk og international scenekunst, som til stadighed formår at tale til sin samtid på tværs af skel. Deres repertoire kommenterer og reflekterer vores samfund, og de arbejder kontinuerligt for, at så mange som muligt i Sverige og internationalt skal have glæde af samtidsdans."
+          ]
+        }
+      ]
+    }
+  ]
 }

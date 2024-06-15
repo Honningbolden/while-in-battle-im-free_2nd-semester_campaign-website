@@ -9,7 +9,7 @@ type InformationOverlayProps = {
   onClose: () => void;
 };
 
-export default function InformationOverlay() {
+export default function InformationOverlay_OLD() {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
   const { x, y } = useFollowPointer(ref);
