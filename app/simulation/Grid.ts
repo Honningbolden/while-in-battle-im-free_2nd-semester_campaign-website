@@ -1,15 +1,11 @@
 import { rgbaColorObj } from "../utilities/hslaToRGBA";
-import { Empty, Particle } from "./Particle";
-
-interface ParticleOptions {
-  color?: rgbaColorObj;
-  empty?: boolean;
-}
+import { Empty, Particle, ParticleOptions, IParticle } from "./Particle";
 
 export class Grid {
   width: number;
   height: number;
-  grid: Array<ParticleOptions>;
+  grid: Array<Particle | IParticle>;
+  rowCount: number;
   modifiedIndices: Set<number>;
   cleared: boolean;
   ctx: CanvasRenderingContext2D;
@@ -20,6 +16,7 @@ export class Grid {
     this.width = width;
     this.height = height;
     this.grid = new Array(this.width * this.height).fill(0).map(() => new Empty());
+    this.rowCount = Math.floor(this.grid.length / this.width);
     this.modifiedIndices = new Set<number>();
     this.cleared = false;
     this.ctx = ctx;
@@ -36,12 +33,12 @@ export class Grid {
     return y * this.width + x;
   }
 
-  setIndex(i: number, particle: ParticleOptions) {
+  setIndex(i: number, particle: IParticle) {
     this.grid[i] = particle;
     this.modifiedIndices.add(i);
   }
 
-  set(x: number, y: number, particle: Particle) {
+  set(x: number, y: number, particle: IParticle) {
     const index = this.index(x, y);
     this.setIndex(index, particle);
   }
@@ -83,23 +80,78 @@ export class Grid {
 
     if (this.isEmpty(below)) {
       this.swap(i, below);
+      return below;
+      // Check to make sure belowLeft didn't wrap to the next line
     } else if (this.isEmpty(belowLeft) && belowLeft % this.width < column) {
       this.swap(i, belowLeft);
+      return belowLeft;
+      // Check to make sure belowRight didn't wrap to the next line
     } else if (this.isEmpty(belowRight) && belowRight % this.width > column) {
       this.swap(i, belowRight);
+      return belowRight;
     }
+    return i;
   }
+
+  // update() {
+  //   this.cleared = false;
+  //   this.modifiedIndices = new Set();
+
+  //   for (let row = this.height - 1; row >= 0; row--) {
+  //     const rowOffset = row * this.width;
+  //     const leftToRight = Math.random() > 0.5;
+  //     for (let i = 0; i < this.width; i++) {
+  //       const columnOffset = leftToRight ? i : -i - 1 + this.width;
+  //       this.updatePixel(rowOffset + columnOffset);
+  //     }
+  //   }
+  // }
 
   update() {
     this.cleared = false;
     this.modifiedIndices = new Set();
-    
-    for (let row = this.height - 1; row >= 0; row--) {
+
+    for (let row = this.rowCount - 1; row >= 0; row--) {
       const rowOffset = row * this.width;
       const leftToRight = Math.random() > 0.5;
       for (let i = 0; i < this.width; i++) {
         const columnOffset = leftToRight ? i : -i - 1 + this.width;
-        this.updatePixel(rowOffset + columnOffset);
+        let index = rowOffset + columnOffset;
+        // If it's empty, just skip this logic
+        if (this.isEmpty(index)) {
+          continue;
+        }
+        const particle = this.grid[index];
+
+        particle.update();
+
+        // If the particle will be modified, mark it as such.
+        // This is needed as fractional (probabilistic) movement
+        // will not otherwise be tracked.
+        if (!particle.modified) {
+          // If it wasn't modified, just continue in the loop
+          continue;
+        }
+
+        if ('getUpdateCount' in particle) {
+          // Update the number of tims the particle isntruct us to
+          for (let v = 0; v < particle.getUpdateCount(); v++) {
+            const newIndex: number = this.updatePixel(index) as number;
+  
+            // If we swapped the particle to a new location,
+            // we need to update our index to be that new one.
+            // As we are repeatedly updating the same particle.
+            if (newIndex !== index) {
+              // We can add the same index multiple times, it's a set.
+              this.modifiedIndices.add(index);
+              this.modifiedIndices.add(newIndex);
+              index = newIndex;
+            } else {
+              particle.resetVelocity();
+              break;
+            }
+          }
+        }
       }
     }
   }
@@ -115,15 +167,14 @@ export class Grid {
     }
 
     this.modifiedIndices.forEach((index) => {
-      this.setPixel(index, this.grid[index])
-    })
-
+      this.setPixel(index, this.grid[index]);
+    });
 
     this.modifiedIndices.clear();
   }
 
   setPixel(i: number, particle: ParticleOptions) {
-    const x = i % this.width * this.resolution;
+    const x = (i % this.width) * this.resolution;
     const y = Math.floor(i / this.width) * this.resolution;
 
     if (!particle.empty && particle.color) {

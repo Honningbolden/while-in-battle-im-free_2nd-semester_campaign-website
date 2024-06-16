@@ -5,7 +5,14 @@ export interface ParticleOptions {
   empty?: boolean;
 }
 
+export interface IParticle extends Particle {
+  modified: boolean; // Property type
+  resetVelocity(): void; // Method with no return value
+  getUpdateCount(): number; // Method that returns a number
+}
+
 export class Particle {
+  modified: boolean = false;
   color: rgbaColorObj;
   empty: boolean;
 
@@ -17,7 +24,7 @@ export class Particle {
   update() { }
 }
 
-export class Sand extends Particle {
+export class Sand extends Particle implements IParticle {
   static baseColor: hslaColorObj = { h: 38.4, s: 50.7, l: 60.2, a: 1 };
   static addPropability = 0.5;
 
