@@ -13,11 +13,13 @@ type hslaColorObj = {
 type rgbaColorObj = [number, number, number, number];
 
 export default function FallingSandOverlay() {
+  const currentParticleType = useRef(Sand);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hasAdjustedCanvasSize = useRef<boolean>(false);
   let ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   let gridRef = useRef<Grid | null>(null);
-  const RESOLUTION = 10;
+  const RESOLUTION = 5;
 
   const SAND_COLOR: hslaColorObj = { h: 38.4, s: 50.7, l: 60.2, a: 1 };
 
@@ -53,9 +55,9 @@ export default function FallingSandOverlay() {
       gridRef.current!.setCircle(
         x,
         y,
-        () => varyColor(SAND_COLOR),
+        () => new currentParticleType.current,
         2, // radius
-        0.5 // propability
+        currentParticleType.current.addPropability // propability
       );
     });
 
@@ -77,30 +79,90 @@ export default function FallingSandOverlay() {
   )
 }
 
+interface ParticleOptions {
+  color?: rgbaColorObj;
+  empty?: boolean;
+}
+
+class Particle {
+  color: rgbaColorObj;
+  empty: boolean;
+
+  constructor({ color = [0,0,0,0], empty }: ParticleOptions = {}) {
+    this.color = color,
+    this.empty = empty ?? false;
+  }
+
+  update() { }
+}
+
+class Sand extends Particle {
+  static baseColor: hslaColorObj = { h: 38.4, s: 50.7, l: 60.2, a: 1 };
+  static addPropability = 0.5;
+  constructor() {
+    super({ color: varyColor(Sand.baseColor) });
+  }
+}
+
+class Empty extends Particle {
+  static baseColor = [0, 0, 0, 0];
+
+  constructor() {
+    super({ empty: true });
+  }
+}
+
 class Grid {
   width: number;
   height: number;
-  grid: Array<number | rgbaColorObj>;
+  grid: Array<ParticleOptions>;
   ctx: CanvasRenderingContext2D;
   resolution: number;
 
   constructor(width: number, height: number, ctx: CanvasRenderingContext2D, resolution: number) {
     this.width = width;
     this.height = height;
-    this.grid = new Array(width * height).fill(0)
+    this.grid = this.clear();
     this.ctx = ctx;
     this.resolution = resolution;
   }
 
-  drawingGrid() {
-    this.grid.forEach((color, index) => {
-      if (color !== 0 && isRgbaColorObj(color)) this.setPixel(index, color);
-    })
+  clear() { // Clear canvas
+    return this.grid = new Array(this.width * this.height).fill(0).map(() => new Empty());
   }
 
-  update() {
-    for (let i = this.grid.length - this.width - 1; i > 0; i--) {
-      this.updatePixel(i);
+  index(x: number, y: number) {
+    return y * this.width + x;
+  }
+
+  setIndex(i: number, particle: ParticleOptions) {
+    this.grid[i] = particle;
+  }
+
+  set(x: number, y: number, particle: Particle) {
+    const index = this.index(x, y);
+    this.setIndex(index, particle);
+  }
+
+  swap(a: number, b: number) {
+    const temp = this.grid[a];
+    this.grid[a] = this.grid[b];
+    this.grid[b] = temp;
+  }
+
+  isEmpty(index: number) {
+    // For now, if out of bounds, return "not empty"
+    return this.grid[index]?.empty ?? false;
+  }
+
+  setCircle(x: number, y: number, createParticle: () => Particle, radius: number = 2, propability: number = 1.0) {
+    let radiusSq = radius ** 2;
+    for (let y1 = -radius; y1 <= radius; y1++) {
+      for (let x1 = -radius; x1 <= radius; x1++) {
+        if (x1 ** 2 + y1 ** 2 <= radiusSq && Math.random() < propability) {
+          this.set(x + x1, y + y1, createParticle());
+        }
+      }
     }
   }
 
@@ -118,42 +180,25 @@ class Grid {
     }
   }
 
-  clear() { // Clear canvas
-    this.grid = new Array(this.width * this.height).fill(0);
-    this.ctx.clearRect(0, 0, this.width, this.height);
+  update() {
+    for (let i = this.grid.length - this.width - 1; i > 0; i--) {
+      this.updatePixel(i);
+    }
+  }
+
+  drawingGrid() {
+    this.grid.forEach((particle, index) => {
+      this.setPixel(index, particle.color!);
+    });
   }
 
   setPixel(i: number, color: rgbaColorObj) {
     const x = i % this.width * this.resolution;
     const y = Math.floor(i / this.width) * this.resolution;
-    this.ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
+    this.ctx.fillStyle = `rgba(${color![0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
     this.ctx.fillRect(x, y, this.resolution, this.resolution);
   }
 
-  setCircle(x: number, y: number, colorFn: () => rgbaColorObj, radius: number = 2, propability: number = 1.0) {
-    let radiusSq = radius ** 2;
-    for (let y1 = -radius; y1 <= radius; y1++) {
-      for (let x1 = -radius; x1 <= radius; x1++) {
-        if (x1**2 + y1**2 <= radiusSq && Math.random() < propability) {
-          this.set(x + x1, y + y1, colorFn());
-        }
-      }
-    }
-  }
-
-  set(x: number, y: number, color: rgbaColorObj) {
-    this.grid[y * this.width + x] = color;
-  }
-
-  swap(a: number, b: number) {
-    const temp = this.grid[a];
-    this.grid[a] = this.grid[b];
-    this.grid[b] = temp;
-  }
-
-  isEmpty(index: number) {
-    return this.grid[index] === 0;
-  }
 }
 
 const varyColor = (color: hslaColorObj): rgbaColorObj => {
