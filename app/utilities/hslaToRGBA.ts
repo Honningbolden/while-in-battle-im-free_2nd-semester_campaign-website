@@ -1,4 +1,10 @@
-type rgbaColorObj = [number, number, number, number];
+export type hslaColorObj = {
+  h: number;
+  s: number;
+  l: number;
+  a: number;
+};
+export type rgbaColorObj = [number, number, number, number];
 
 
 export default function HSLAToRGBA(hsla: number[]): rgbaColorObj {
