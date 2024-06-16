@@ -1,4 +1,5 @@
 import HSLAToRGBA, { hslaColorObj, rgbaColorObj } from "../utilities/hslaToRGBA";
+import { RESOLUTION } from "../components/FallingSand";
 
 export interface ParticleOptions {
   color?: rgbaColorObj;
@@ -35,8 +36,8 @@ export class Sand extends Particle implements IParticle {
 
   constructor() {
     super({ color: varyColor(Sand.baseColor) });
-    this.maxSpeed = 8;
-    this.acceleration = 0.4;
+    this.maxSpeed = (RESOLUTION as number) !== 1 ? 8 : 40;
+    this.acceleration = (RESOLUTION as number) !== 1 ? 0.4 : 1.2;
     this.velocity = 0;
     this.modified = false;
   }

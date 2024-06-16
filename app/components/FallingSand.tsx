@@ -7,10 +7,11 @@ import { Sand } from "../simulation/Particle";
 // Import simulation dependencies
 import { Grid } from "../simulation/Grid";
 
+export const RESOLUTION = 1;
+export const RADIUS = 10;
+
 export default function FallingSandOverlay() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);
-  const RESOLUTION = 2;
-  const RADIUS = 10;
 
   const currentParticleType = useRef(Sand);
   const canvasRef = useRef<HTMLCanvasElement>(null);

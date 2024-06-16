@@ -59,7 +59,7 @@ export class Grid {
     return this.grid[index]?.empty ?? false;
   }
 
-  setCircle(x: number, y: number, createParticle: () => Particle, radius: number = 2, propability: number = 1.0) {
+  setCircle(x: number, y: number, createParticle: () => IParticle, radius: number = 2, propability: number = 1.0) {
     let radiusSq = radius ** 2;
     for (let y1 = -radius; y1 <= radius; y1++) {
       for (let x1 = -radius; x1 <= radius; x1++) {
