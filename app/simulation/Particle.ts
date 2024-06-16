@@ -20,8 +20,47 @@ export class Particle {
 export class Sand extends Particle {
   static baseColor: hslaColorObj = { h: 38.4, s: 50.7, l: 60.2, a: 1 };
   static addPropability = 0.5;
+
+  maxSpeed: number;
+  acceleration: number;
+  velocity: number;
+  modified: boolean;
+
   constructor() {
     super({ color: varyColor(Sand.baseColor) });
+    this.maxSpeed = 8;
+    this.acceleration = 0.4;
+    this.velocity = 0;
+    this.modified = false;
+  }
+
+  resetVelocity() {
+    this.velocity = 0;
+  }
+
+  updateVelocity() {
+    let newVelocity = this.velocity + this.acceleration;
+
+    if (Math.abs(newVelocity) > this.maxSpeed) {
+      newVelocity = Math.sign(newVelocity) * this.maxSpeed;
+    }
+    this.velocity = newVelocity;
+  }
+
+  update() {
+    if ((this.maxSpeed ?? 0) === 0) {
+      this.modified = false;
+      return;
+    }
+    this.updateVelocity();
+    this.modified = this.velocity !== 0;
+  }
+
+  getUpdateCount() {
+    const abs = Math.abs(this.velocity);
+    const floored = Math.floor(abs);
+    const mod = abs - floored;
+    return floored + (Math.random() < mod ? 1 : 0);
   }
 }
 
