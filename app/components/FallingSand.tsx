@@ -65,7 +65,8 @@ export default function FallingSandOverlay() {
 
   const draw = () => {
     // ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height); // Clear canvas
-    // gridRef.current!.update();
+    gridRef.current!.update();
+
     if (gridRef.current!.needsUpdate()) {
       // console.log("needsUpdate");
       gridRef.current!.drawGrid();
@@ -156,6 +157,7 @@ class Grid {
   clear() { // Clear canvas
     this.cleared = true;
     this.grid = new Array(this.width * this.height).fill(0).map(() => new Empty());
+    // this.modifiedIndices.clear();
   }
 
   index(x: number, y: number) {
@@ -178,6 +180,9 @@ class Grid {
     const temp = this.grid[a];
     this.grid[a] = this.grid[b];
     this.grid[b] = temp;
+
+    this.modifiedIndices.add(a);
+    this.modifiedIndices.add(b);
   }
 
   isEmpty(index: number) {
@@ -205,15 +210,18 @@ class Grid {
 
     if (this.isEmpty(below)) {
       this.swap(i, below);
+      this.setIndex(i, new Empty()); // Clear old position
     } else if (this.isEmpty(belowLeft)) {
       this.swap(i, belowLeft);
+      this.setIndex(i, new Empty()); // Clear old position
     } else if (this.isEmpty(belowRight)) {
       this.swap(i, belowRight);
+      this.setIndex(i, new Empty()); // Clear old position
     }
   }
 
   update() {
-    console.log("update")
+    // console.log("update")
     this.cleared = false;
     this.modifiedIndices.clear() //= new Set();
     for (let i = this.grid.length - this.width - 1; i > 0; i--) {
@@ -226,7 +234,19 @@ class Grid {
   }
 
   drawGrid() {
-    console.log("drawgrid", Date.now())
+    const now = Date.now();
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    }).format(now);
+
+    console.log("drawgrid", formattedDate)
+
+    this.update(); // Ensure update is called before drawing
 
     if (this.cleared) {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // This is for later (Conditional rendering)
@@ -238,14 +258,11 @@ class Grid {
     }
 
     this.modifiedIndices.clear();
-
-
-    this.grid.forEach((particle, index) => { // Update pixels
-      this.setPixel(index, this.grid[index].color!);
-    });
   }
 
   setPixel(i: number, color: rgbaColorObj) {
+    console.log("setPixel");
+
     const x = i % this.width * this.resolution;
     const y = Math.floor(i / this.width) * this.resolution;
     this.ctx.fillStyle = `rgba(${color![0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
