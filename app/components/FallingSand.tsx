@@ -13,15 +13,13 @@ type hslaColorObj = {
 type rgbaColorObj = [number, number, number, number];
 
 export default function FallingSandOverlay() {
-  const currentParticleType = useRef(Sand);
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const hasAdjustedCanvasSize = useRef<boolean>(false);
-  let ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-  let gridRef = useRef<Grid | null>(null);
   const RESOLUTION = 5;
 
-  const SAND_COLOR: hslaColorObj = { h: 38.4, s: 50.7, l: 60.2, a: 1 };
+  const currentParticleType = useRef(Sand);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  let ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+  let gridRef = useRef<Grid | null>(null);
 
 
   useEffect(() => {
@@ -66,7 +64,7 @@ export default function FallingSandOverlay() {
   };
 
   const draw = () => {
-    // ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height); // Clear canvas
+    ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height); // Clear canvas
     // gridRef.current!.update();
     gridRef.current!.drawGrid();
 
