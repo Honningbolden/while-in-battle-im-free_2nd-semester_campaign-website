@@ -45,7 +45,7 @@ export default function FallingSandOverlay() {
     const gridHeight = canvasRef.current!.height / RESOLUTION;
 
     ctxRef.current = canvasRef.current!.getContext("2d");
-    gridRef.current = new Grid(Math.floor(gridWidth), Math.floor(gridHeight), ctxRef.current!, RESOLUTION);
+    gridRef.current = new Grid(Math.floor(gridWidth), Math.floor(gridHeight), ctxRef.current!, canvasRef.current!, RESOLUTION);
 
 
     canvasRef.current!.addEventListener("mousemove", (event) => {
@@ -61,13 +61,13 @@ export default function FallingSandOverlay() {
       );
     });
 
-    if (gridRef.current!.needsUpdate()) {} // For later
+    // if (gridRef.current!.needsUpdate()) {} // For later
     draw();
   };
 
   const draw = () => {
-    ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-    gridRef.current!.update();
+    // ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height); // Clear canvas
+    // gridRef.current!.update();
     gridRef.current!.drawGrid();
 
     requestAnimationFrame(draw);
@@ -102,9 +102,9 @@ class Particle {
   color: rgbaColorObj;
   empty: boolean;
 
-  constructor({ color = [0,0,0,0], empty }: ParticleOptions = {}) {
+  constructor({ color = [0, 0, 0, 0], empty }: ParticleOptions = {}) {
     this.color = color,
-    this.empty = empty ?? false;
+      this.empty = empty ?? false;
   }
 
   update() { }
@@ -138,15 +138,17 @@ class Grid {
   modifiedIndices: Set<number>;
   cleared: boolean;
   ctx: CanvasRenderingContext2D;
+  canvas: HTMLCanvasElement;
   resolution: number;
 
-  constructor(width: number, height: number, ctx: CanvasRenderingContext2D, resolution: number) {
+  constructor(width: number, height: number, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, resolution: number) {
     this.width = width;
     this.height = height;
     this.grid = this.clear();
     this.modifiedIndices = new Set<number>();
     this.cleared = true;
     this.ctx = ctx;
+    this.canvas = canvas;
     this.resolution = resolution;
   }
 
@@ -211,14 +213,29 @@ class Grid {
 
   update() {
     this.cleared = false;
-    this.modifiedIndices = new Set();
+    this.modifiedIndices.clear();
     for (let i = this.grid.length - this.width - 1; i > 0; i--) {
       this.updatePixel(i);
     }
   }
 
+  needsUpdate() {
+    return this.cleared || this.modifiedIndices.size;
+  }
+
   drawGrid() {
-    this.grid.forEach((particle, index) => {
+    this.update();
+
+    if (this.cleared) {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // This is for later (Conditional rendering)
+    } else if (this.modifiedIndices.size) {
+      this.modifiedIndices.forEach((index) => {
+        this.setPixel(index, this.grid[index].color || [0, 0, 0, 0])
+      })
+    }
+
+
+    this.grid.forEach((particle, index) => { // Update pixels
       this.setPixel(index, particle.color!);
     });
   }
@@ -229,7 +246,6 @@ class Grid {
     this.ctx.fillStyle = `rgba(${color![0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
     this.ctx.fillRect(x, y, this.resolution, this.resolution);
   }
-
 }
 
 const varyColor = (color: hslaColorObj): rgbaColorObj => {
