@@ -61,13 +61,14 @@ export default function FallingSandOverlay() {
       );
     });
 
+    if (gridRef.current!.needsUpdate()) {} // For later
     draw();
   };
 
   const draw = () => {
     ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
     gridRef.current!.update();
-    gridRef.current!.drawingGrid();
+    gridRef.current!.drawGrid();
 
     requestAnimationFrame(draw);
   }
@@ -78,6 +79,19 @@ export default function FallingSandOverlay() {
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 interface ParticleOptions {
   color?: rgbaColorObj;
@@ -112,10 +126,17 @@ class Empty extends Particle {
   }
 }
 
+
+
+
+
+
 class Grid {
   width: number;
   height: number;
   grid: Array<ParticleOptions>;
+  modifiedIndices: Set<number>;
+  cleared: boolean;
   ctx: CanvasRenderingContext2D;
   resolution: number;
 
@@ -123,11 +144,14 @@ class Grid {
     this.width = width;
     this.height = height;
     this.grid = this.clear();
+    this.modifiedIndices = new Set<number>();
+    this.cleared = true;
     this.ctx = ctx;
     this.resolution = resolution;
   }
 
   clear() { // Clear canvas
+    this.cleared = true;
     return this.grid = new Array(this.width * this.height).fill(0).map(() => new Empty());
   }
 
@@ -137,6 +161,7 @@ class Grid {
 
   setIndex(i: number, particle: ParticleOptions) {
     this.grid[i] = particle;
+    this.modifiedIndices.add(i);
   }
 
   set(x: number, y: number, particle: Particle) {
@@ -145,6 +170,8 @@ class Grid {
   }
 
   swap(a: number, b: number) {
+    if (this.grid[a].empty && this.grid[b].empty) return;
+
     const temp = this.grid[a];
     this.grid[a] = this.grid[b];
     this.grid[b] = temp;
@@ -167,6 +194,8 @@ class Grid {
   }
 
   updatePixel(i: number) {
+    if (this.isEmpty(i)) return;
+
     const below = i + this.width;
     const belowLeft = below - 1;
     const belowRight = below + 1;
@@ -181,12 +210,14 @@ class Grid {
   }
 
   update() {
+    this.cleared = false;
+    this.modifiedIndices = new Set();
     for (let i = this.grid.length - this.width - 1; i > 0; i--) {
       this.updatePixel(i);
     }
   }
 
-  drawingGrid() {
+  drawGrid() {
     this.grid.forEach((particle, index) => {
       this.setPixel(index, particle.color!);
     });
