@@ -64,9 +64,12 @@ export default function FallingSandOverlay() {
   };
 
   const draw = () => {
-    ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height); // Clear canvas
+    // ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height); // Clear canvas
     // gridRef.current!.update();
-    gridRef.current!.drawGrid();
+    if (gridRef.current!.needsUpdate()) {
+      // console.log("needsUpdate");
+      gridRef.current!.drawGrid();
+    }
 
     requestAnimationFrame(draw);
   }
@@ -142,9 +145,9 @@ class Grid {
   constructor(width: number, height: number, ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, resolution: number) {
     this.width = width;
     this.height = height;
-    this.grid = this.clear();
+    this.grid = new Array(this.width * this.height).fill(0).map(() => new Empty());
     this.modifiedIndices = new Set<number>();
-    this.cleared = true;
+    this.cleared = false;
     this.ctx = ctx;
     this.canvas = canvas;
     this.resolution = resolution;
@@ -152,7 +155,7 @@ class Grid {
 
   clear() { // Clear canvas
     this.cleared = true;
-    return this.grid = new Array(this.width * this.height).fill(0).map(() => new Empty());
+    this.grid = new Array(this.width * this.height).fill(0).map(() => new Empty());
   }
 
   index(x: number, y: number) {
@@ -210,31 +213,35 @@ class Grid {
   }
 
   update() {
+    console.log("update")
     this.cleared = false;
-    this.modifiedIndices.clear();
+    this.modifiedIndices.clear() //= new Set();
     for (let i = this.grid.length - this.width - 1; i > 0; i--) {
       this.updatePixel(i);
     }
   }
 
   needsUpdate() {
-    return this.cleared || this.modifiedIndices.size;
+    return this.cleared || this.modifiedIndices.size > 0;
   }
 
   drawGrid() {
-    this.update();
+    console.log("drawgrid", Date.now())
 
     if (this.cleared) {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // This is for later (Conditional rendering)
-    } else if (this.modifiedIndices.size) {
+      this.cleared = false;
+    } else if (this.modifiedIndices.size > 0) {
       this.modifiedIndices.forEach((index) => {
         this.setPixel(index, this.grid[index].color || [0, 0, 0, 0])
       })
     }
 
+    this.modifiedIndices.clear();
+
 
     this.grid.forEach((particle, index) => { // Update pixels
-      this.setPixel(index, particle.color!);
+      this.setPixel(index, this.grid[index].color!);
     });
   }
 
