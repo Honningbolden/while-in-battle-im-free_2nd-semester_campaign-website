@@ -1,6 +1,6 @@
 "use client";
 
-import HSLToRGB from "../utilities/hslToRGB";
+import HSLAToRGBA from "../utilities/hslaToRGBA";
 import { useEffect, useRef, useState } from "react";
 
 type hslaColorObj = {
@@ -13,7 +13,6 @@ type hslaColorObj = {
 type rgbaColorObj = [number, number, number, number];
 
 export default function FallingSandOverlay() {
-  const [isReady, setIsReady] = useState<boolean>(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hasAdjustedCanvasSize = useRef<boolean>(false);
   let ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -129,27 +128,8 @@ const varyColor = (color: hslaColorObj) => {
   saturation = Math.max(0, Math.min(saturation, 100));
   let lightness = color.l + Math.floor(Math.random() * 20) - 10;
   lightness = Math.max(0, Math.min(lightness, 100));
-  return HSLToRGB([color.h, saturation, lightness, color.a]);
+  return HSLAToRGBA([color.h, saturation, lightness, color.a]);
 }
-
-// const setPixel = (i: number, color: ColorObj, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, grid: Grid, resolution: number) => {
-//   if (!ctx) return;
-
-//   let [r, g, b, a] = _hslaToRGBA([color.h, color.s, color.l, color.a]);
-
-//   let imgData = ctx.createImageData(1, 1);
-//   imgData.data[0] = r;
-//   imgData.data[2] = g;
-//   imgData.data[3] = b;
-//   imgData.data[4] = a;
-
-//   const x = (i % gridRef.current!.width) * RESOLUTION;
-//   const y = Math.floor(i / canvas.width);
-
-//   ctx.fillStyle = `rgba(${r},${g},${b},${a}`;
-
-//   // ctx.putImageData(imgData, x, y);
-// }
 
 function isRgbaColorObj(color: any): color is rgbaColorObj {
   return Array.isArray(color) && color.length === 4 && color.every(c => typeof c === 'number');

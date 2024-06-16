@@ -1,7 +1,7 @@
 type rgbaColorObj = [number, number, number, number];
 
 
-export default function HSLToRGB(hsla: number[]): rgbaColorObj {
+export default function HSLAToRGBA(hsla: number[]): rgbaColorObj {
   const hue = hsla[0];
   const saturation = hsla[1] / 100;
   const lightness = hsla[2] / 100;
