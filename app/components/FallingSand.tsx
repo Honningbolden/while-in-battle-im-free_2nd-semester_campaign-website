@@ -233,29 +233,43 @@ class Grid {
     return this.cleared || this.modifiedIndices.size > 0;
   }
 
+  // drawGrid() {
+  //   const now = Date.now();
+  //   const formattedDate = new Intl.DateTimeFormat('en-US', {
+  //     year: 'numeric',
+  //     month: 'long',
+  //     day: '2-digit',
+  //     hour: '2-digit',
+  //     minute: '2-digit',
+  //     second: '2-digit',
+  //   }).format(now);
+
+  //   console.log("drawgrid", formattedDate)
+
+  //   this.update(); // Ensure update is called before drawing
+
+  //   if (this.cleared) {
+  //     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // This is for later (Conditional rendering)
+  //     this.cleared = false;
+  //   } else if (this.modifiedIndices.size > 0) {
+  //     this.modifiedIndices.forEach((index) => {
+  //       this.setPixel(index, this.grid[index].color || [0, 0, 0, 0])
+  //     })
+  //   }
+
+  //   this.modifiedIndices.clear();
+  // }
+
   drawGrid() {
-    const now = Date.now();
-    const formattedDate = new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    }).format(now);
-
-    console.log("drawgrid", formattedDate)
-
-    this.update(); // Ensure update is called before drawing
-
     if (this.cleared) {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // This is for later (Conditional rendering)
       this.cleared = false;
-    } else if (this.modifiedIndices.size > 0) {
-      this.modifiedIndices.forEach((index) => {
-        this.setPixel(index, this.grid[index].color || [0, 0, 0, 0])
-      })
     }
+
+    this.modifiedIndices.forEach((index) => {
+      this.setPixel(index, this.grid[index].color || [0, 0, 0, 0])
+    })
+
 
     this.modifiedIndices.clear();
   }
@@ -266,6 +280,7 @@ class Grid {
     const x = i % this.width * this.resolution;
     const y = Math.floor(i / this.width) * this.resolution;
     this.ctx.fillStyle = `rgba(${color![0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
+    if (color[0] === 0) this.ctx.fillStyle = "#000000";
     this.ctx.fillRect(x, y, this.resolution, this.resolution);
   }
 }
