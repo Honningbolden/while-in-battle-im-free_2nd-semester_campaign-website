@@ -50,8 +50,13 @@ export default function FallingSandOverlay() {
       let rect = canvasRef.current!.getBoundingClientRect();
       let x = Math.floor((event.clientX - rect.left) / RESOLUTION);
       let y = Math.floor((event.clientY - rect.top) / RESOLUTION);
-      let color: rgbaColorObj = varyColor(SAND_COLOR);
-      gridRef.current!.set(x, y, color);
+      gridRef.current!.setCircle(
+        x,
+        y,
+        () => varyColor(SAND_COLOR),
+        2, // radius
+        0.5 // propability
+      );
     });
 
     draw();
@@ -125,6 +130,17 @@ class Grid {
     this.ctx.fillRect(x, y, this.resolution, this.resolution);
   }
 
+  setCircle(x: number, y: number, colorFn: () => rgbaColorObj, radius: number = 2, propability: number = 1.0) {
+    let radiusSq = radius ** 2;
+    for (let y1 = -radius; y1 <= radius; y1++) {
+      for (let x1 = -radius; x1 <= radius; x1++) {
+        if (x1**2 + y1**2 <= radiusSq && Math.random() < propability) {
+          this.set(x + x1, y + y1, colorFn());
+        }
+      }
+    }
+  }
+
   set(x: number, y: number, color: rgbaColorObj) {
     this.grid[y * this.width + x] = color;
   }
@@ -140,7 +156,7 @@ class Grid {
   }
 }
 
-const varyColor = (color: hslaColorObj) => {
+const varyColor = (color: hslaColorObj): rgbaColorObj => {
   let saturation = color.s + Math.floor(Math.random() * 20) - 20;
   saturation = Math.max(0, Math.min(saturation, 100));
   let lightness = color.l + Math.floor(Math.random() * 20) - 10;
