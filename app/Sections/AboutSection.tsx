@@ -22,7 +22,7 @@ interface AboutSectionProps {
 }
 
 export default function AboutSection({ aboutContent }: AboutSectionProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // Issue here! Nav buttons aren't calling useFollower when useState(false) and not true
   const toggleOpen = () => {
     console.log("toggle");
     setIsOpen(!isOpen);

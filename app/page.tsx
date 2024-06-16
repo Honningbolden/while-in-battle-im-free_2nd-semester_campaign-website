@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <>
       <main>
-        <AboutSection aboutContent={aboutContent} />
+        {/* <AboutSection aboutContent={aboutContent} /> */}
         <HeroSection />
         <TicketInformation content={ticketInformation} />
         <TeaserDescription />

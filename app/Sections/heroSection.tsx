@@ -1,4 +1,6 @@
+import FallingSandOverlay from "../components/FallingSand"
 import styles from "../styles/hero.module.css"
+
 
 export default function HeroSection() {
   return (
@@ -16,6 +18,7 @@ export default function HeroSection() {
             </div>
           </div>
         </section>
+        <FallingSandOverlay />
       </section>
     </>
   )
