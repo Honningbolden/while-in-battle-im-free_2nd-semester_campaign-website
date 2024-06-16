@@ -30,7 +30,6 @@ export default function FallingSandOverlay() {
         if (parent) {
           canvas.width = parent.clientWidth;
           canvas.height = parent.clientHeight;
-          console.log("hasAdjustedCanvasSize true")
           hasAdjustedCanvasSize.current = true;
           // Run setup function
           setup();
@@ -46,15 +45,12 @@ export default function FallingSandOverlay() {
     ctxRef.current = canvasRef.current!.getContext("2d");
     gridRef.current = new Grid(Math.floor(gridWidth), Math.floor(gridHeight), ctxRef.current!, RESOLUTION);
 
-    console.log("Setup running");
 
     canvasRef.current!.addEventListener("mousemove", (event) => {
-      console.log("mousemove");
       let rect = canvasRef.current!.getBoundingClientRect();
       let x = Math.floor((event.clientX - rect.left) / RESOLUTION);
       let y = Math.floor((event.clientY - rect.top) / RESOLUTION);
       let color: rgbaColorObj = varyColor(SAND_COLOR);
-      console.log('color', color)
       gridRef.current!.set(x, y, color);
     });
 
@@ -62,7 +58,9 @@ export default function FallingSandOverlay() {
   };
 
   const draw = () => {
+    ctxRef.current!.clearRect(0,0,canvasRef.current!.width, canvasRef.current!.height);
     gridRef.current!.update();
+    gridRef.current!.drawingGrid();
 
     requestAnimationFrame(draw);
   }
@@ -89,10 +87,24 @@ class Grid {
     this.resolution = resolution;
   }
 
-  update() {
+  drawingGrid() {
     this.grid.forEach((color, index) => {
       if (color !== 0 && isRgbaColorObj(color)) this.setPixel(index, color);
     })
+  }
+
+  update() {
+    for (let i = this.grid.length - this.width -1; i > 0; i--) {
+      this.updatePixel(i);
+    }
+  }
+
+  updatePixel(i: number) {
+    const below = i + this.width;
+
+    if (this.isEmpty(below)) {
+      this.swap(i, below);
+    }
   }
 
   clear() { // Clear canvas
@@ -101,7 +113,6 @@ class Grid {
   }
 
   setPixel(i: number, color: rgbaColorObj) {
-    console.log("setPixel called")
     const x = i % this.width * this.resolution;
     const y = Math.floor(i / this.width) * this.resolution;
     this.ctx.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3]})`;
