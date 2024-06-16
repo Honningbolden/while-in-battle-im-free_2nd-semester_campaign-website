@@ -58,7 +58,7 @@ export default function FallingSandOverlay() {
   };
 
   const draw = () => {
-    ctxRef.current!.clearRect(0,0,canvasRef.current!.width, canvasRef.current!.height);
+    ctxRef.current!.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
     gridRef.current!.update();
     gridRef.current!.drawingGrid();
 
@@ -94,16 +94,22 @@ class Grid {
   }
 
   update() {
-    for (let i = this.grid.length - this.width -1; i > 0; i--) {
+    for (let i = this.grid.length - this.width - 1; i > 0; i--) {
       this.updatePixel(i);
     }
   }
 
   updatePixel(i: number) {
     const below = i + this.width;
+    const belowLeft = below - 1;
+    const belowRight = below + 1;
 
     if (this.isEmpty(below)) {
       this.swap(i, below);
+    } else if (this.isEmpty(belowLeft)) {
+      this.swap(i, belowLeft);
+    } else if (this.isEmpty(belowRight)) {
+      this.swap(i, belowRight);
     }
   }
 
