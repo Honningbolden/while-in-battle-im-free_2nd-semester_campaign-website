@@ -79,12 +79,13 @@ export class Grid {
     const below = i + this.width;
     const belowLeft = below - 1;
     const belowRight = below + 1;
+    const column = i % this.width;
 
     if (this.isEmpty(below)) {
       this.swap(i, below);
-    } else if (this.isEmpty(belowLeft)) {
+    } else if (this.isEmpty(belowLeft) && belowLeft % this.width < column) {
       this.swap(i, belowLeft);
-    } else if (this.isEmpty(belowRight)) {
+    } else if (this.isEmpty(belowRight) && belowRight % this.width > column) {
       this.swap(i, belowRight);
     }
   }
@@ -92,8 +93,14 @@ export class Grid {
   update() {
     this.cleared = false;
     this.modifiedIndices = new Set();
-    for (let i = this.grid.length - this.width - 1; i > 0; i--) {
-      this.updatePixel(i);
+    
+    for (let row = this.height - 1; row >= 0; row--) {
+      const rowOffset = row * this.width;
+      const leftToRight = Math.random() > 0.5;
+      for (let i = 0; i < this.width; i++) {
+        const columnOffset = leftToRight ? i : -i - 1 + this.width;
+        this.updatePixel(rowOffset + columnOffset);
+      }
     }
   }
 
