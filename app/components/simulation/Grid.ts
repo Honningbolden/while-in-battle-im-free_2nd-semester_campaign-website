@@ -1,4 +1,4 @@
-import { rgbaColorObj } from "../utilities/hslaToRGBA";
+import { rgbaColorObj } from "@/app/utilities/hslaToRGBA";
 import { Empty, Particle, ParticleOptions, IParticle } from "./Particle";
 
 export class Grid {
