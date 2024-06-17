@@ -18,7 +18,8 @@ export default function TicketInformation({ content }: TicketInformationProps) {
 
   return (
     <>
-      <section className="h-full bg-slate-950 text-white">
+      <section className="h-full text-white">
+        {/* <div id="background" className="absolute -bottom-10 left-0 h-[120%] w-[120%] bg-slate-950 -z-10" /> */}
         <div className="title-type h-full flex flex-row justify-evenly items-center my-auto">
           {contentEntries.map(([key, value]) => {
             if (key === 'callToAction') {

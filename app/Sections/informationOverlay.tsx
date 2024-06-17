@@ -12,7 +12,7 @@ export default function InformationOverlay({ toggleOpen }: InformationOverlayPro
 
   return (
     <>
-      <div onClick={toggleOpen} className={`${styles.clippy} z-50 cursor-pointer h-[65vh] w-[65vh] absolute -top-20 -right-0 bg-blue-600`}>
+      <div onClick={toggleOpen} className={`${styles.clippy} z-[200] cursor-pointer h-[65vh] w-[65vh] absolute -top-20 -right-0 bg-blue-600 mix-blend-multiply stroke-black stroke-2`}>
         <div className="fixed top-0 left-0 w-screen h-80 ">
           <div className="body-text text-2xl text-white gap-4">
             <ParallaxText baseVelocity={-5} rows={3}>Læs mere</ParallaxText>

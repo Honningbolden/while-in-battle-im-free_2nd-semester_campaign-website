@@ -64,9 +64,9 @@ export default function FallingSandOverlay() {
       for (let x = 0; x < canvasRef.current!.width; x += (RESOLUTION * dpr.current)) {
         const pixelIndex = (y * canvasRef.current!.width + x) * 4; // RGBA values
         const alpha = imageData.data[pixelIndex + 3];
-        if (alpha > 200) {
-          const gridX = Math.floor(x / (RESOLUTION * dpr.current));
-          const gridY = Math.floor(y / (RESOLUTION * dpr.current));
+        if (alpha > 100) {
+          const gridX = Math.round(x / (RESOLUTION * dpr.current));
+          const gridY = Math.round(y / (RESOLUTION * dpr.current));
           gridRef.current!.set(gridX, gridY, new Bounds())
         }
       }
@@ -77,7 +77,7 @@ export default function FallingSandOverlay() {
     const gridWidth = canvasRef.current!.width / (RESOLUTION * dpr.current);
     const gridHeight = canvasRef.current!.height / (RESOLUTION * dpr.current);
 
-    gridRef.current = new Grid(Math.floor(gridWidth), Math.floor(gridHeight), ctxRef.current!, canvasRef.current!, RESOLUTION);
+    gridRef.current = new Grid(Math.round(gridWidth), Math.round(gridHeight), ctxRef.current!, canvasRef.current!, RESOLUTION);
 
     if (titleRef) markTextOnGrid();
 
@@ -86,8 +86,8 @@ export default function FallingSandOverlay() {
 
       let rect = canvasRef.current!.getBoundingClientRect();
       if (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) {
-        let x = Math.floor((event.clientX - rect.left) / (RESOLUTION));
-        let y = Math.floor((event.clientY - rect.top) / (RESOLUTION));
+        let x = Math.round((event.clientX - rect.left) / (RESOLUTION));
+        let y = Math.round((event.clientY - rect.top) / (RESOLUTION));
         gridRef.current!.setCircle(
           x,
           y,
@@ -115,10 +115,10 @@ export default function FallingSandOverlay() {
 
   return (
     <>
-      <img ref={titleRef} src="/Title.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50" />
       <div className="absolute top-0 left-0 h-full w-full z-50">
         <canvas className="z-50" ref={canvasRef}></canvas>
       </div>
+      <img ref={titleRef} src="/Title.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50" />
     </>
   )
 }

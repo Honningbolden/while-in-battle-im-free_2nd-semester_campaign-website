@@ -1,5 +1,6 @@
 import FallingSandOverlay from "../components/FallingSand"
 import styles from "../styles/hero.module.css"
+import ParallaxBackground from "../components/ParallaxBackground"
 
 
 export default function HeroSection() {

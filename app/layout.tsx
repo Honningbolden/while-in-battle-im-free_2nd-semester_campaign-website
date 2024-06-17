@@ -17,7 +17,7 @@ export default function RootLayout({
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/lpw3gsy.css"/>
       </head>
-      <body>{children}</body>
+      <body className="overflow-visible">{children}</body>
     </html>
   );
 }
