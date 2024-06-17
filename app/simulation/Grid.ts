@@ -33,12 +33,14 @@ export class Grid {
     return y * this.width + x;
   }
 
-  setIndex(i: number, particle: IParticle) {
-    this.grid[i] = particle;
-    this.modifiedIndices.add(i);
+  setIndex(i: number, particle: IParticle | Particle) {
+    if (this.isEmpty(i)) {
+      this.grid[i] = particle;
+      this.modifiedIndices.add(i);
+    }
   }
 
-  set(x: number, y: number, particle: IParticle) {
+  set(x: number, y: number, particle: IParticle | Particle) {
     const index = this.index(x, y);
     this.setIndex(index, particle);
   }

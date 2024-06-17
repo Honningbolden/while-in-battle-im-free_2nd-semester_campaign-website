@@ -18,11 +18,10 @@ export class Particle {
   empty: boolean;
 
   constructor({ color = [0, 0, 0, 0], empty }: ParticleOptions = {}) {
-    this.color = color,
-      this.empty = empty ?? false;
+    (this.color = color), (this.empty = empty ?? false);
   }
 
-  update() { }
+  update() {}
 }
 
 export class Sand extends Particle implements IParticle {
@@ -80,10 +79,16 @@ export class Empty extends Particle {
   }
 }
 
+export class Bounds extends Particle {
+  constructor() {
+    super({ empty: false });
+  }
+}
+
 export const varyColor = (color: hslaColorObj): rgbaColorObj => {
   let saturation = color.s + Math.floor(Math.random() * 20) - 20;
   saturation = Math.max(0, Math.min(saturation, 100));
   let lightness = color.l + Math.floor(Math.random() * 20) - 10;
   lightness = Math.max(0, Math.min(lightness, 100));
   return HSLAToRGBA([color.h, saturation, lightness, color.a]);
-}
+};

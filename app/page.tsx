@@ -20,7 +20,11 @@ export default async function Home() {
 
   return (
     <>
-      <main>
+      <main style={{
+        backgroundImage: 'url("/kiwihug-zGZYQQVmXw0-unsplash-2.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
         {/* <AboutSection aboutContent={aboutContent} /> */}
         <HeroSection />
         <TicketInformation content={ticketInformation} />
