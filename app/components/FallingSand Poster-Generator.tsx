@@ -105,16 +105,17 @@ export default function FallingSandPosterGenerator() {
     if (titleRef) markTextOnGrid();
 
     const handleMouseMove = (event: MouseEvent) => {
-      if (!canvasRef.current) return;
+      if (!titleRef.current) return;
 
-      let rect = canvasRef.current!.getBoundingClientRect();
-      const scaleX = canvasRef.current.width / rect.width; // Adjust for CSS scaling
-      const scaleY = canvasRef.current.height / rect.height; // Adjust for CSS scaling
+      let rect = titleRef.current.getBoundingClientRect();
+      const padding = 80;
+      const scaleX = canvasRef.current!.width / (rect.width - padding * 2); // Adjust for CSS scaling
+      const scaleY = canvasRef.current!.height / (rect.height - padding * 2); // Adjust for CSS scaling
 
 
       if (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) {
-        let x = Math.round((event.clientX - rect.left) * scaleX / (RESOLUTION * pixelDensity));
-        let y = Math.round((event.clientY - rect.top) * scaleY / (RESOLUTION * pixelDensity));
+        let x = Math.round((event.clientX - rect.left - padding) * scaleX / (RESOLUTION * pixelDensity));
+        let y = Math.round((event.clientY - rect.top - padding) * scaleY / (RESOLUTION * pixelDensity));
         gridRef.current!.setCircle(
           x,
           y,
