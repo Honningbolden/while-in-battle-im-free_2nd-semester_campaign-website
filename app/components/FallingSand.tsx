@@ -8,11 +8,12 @@ import { Sand, Bounds } from "../simulation/Particle";
 import { Grid } from "../simulation/Grid";
 import { text } from "stream/consumers";
 
-export const RESOLUTION = 2;
+export const RESOLUTION = 3;
 export const RADIUS = 2;
 
 export default function FallingSandOverlay() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);
+  let dpr = useRef<number>(1);
 
   const currentParticleType = useRef(Sand);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -27,10 +28,22 @@ export default function FallingSandOverlay() {
       if (canvas) {
         const parent = canvas.parentElement;
         if (parent) {
-          canvas.width = parent.clientWidth;
-          canvas.height = parent.clientHeight;
+          dpr.current = window.devicePixelRatio || 1;
+
+          canvas.width = parent.clientWidth * dpr.current;
+          canvas.height = parent.clientHeight * dpr.current;
+
+          ctxRef.current = canvasRef.current!.getContext("2d");
+          if (ctxRef.current) {
+            ctxRef.current.scale(dpr.current, dpr.current);
+          }
+
+          // Adjust CSS Size to maintain layout size
+          canvas.style.width = `${parent.clientWidth}px`;
+          canvas.style.height = `${parent.clientHeight}px`;
+
+          // Mark canvas adjustment and run setup function
           hasAdjustedCanvasSize.current = true;
-          // Run setup function
           setup();
         }
       }
@@ -40,23 +53,19 @@ export default function FallingSandOverlay() {
   const markTextOnGrid = () => {
     // Draw image
     const titleRect = titleRef.current!.getBoundingClientRect();
-    console.log(titleRect)
-    ctxRef.current!.drawImage(titleRef.current!, titleRect.x, titleRect.y, titleRect.width, titleRect.height);
+    ctxRef.current!.drawImage(titleRef.current!, titleRect.x, titleRect.y + window.scrollY, titleRect.width, titleRect.height);
 
     // Get image data
-    // const imageData = ctxRef.current!.getImageData(titleRect.x, titleRect.y, titleRect.width, titleRect.height);
     const imageData = ctxRef.current!.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-
     const data = imageData.data;
 
-    for (let y = 0; y < canvasRef.current!.height; y += RESOLUTION) {
-      for (let x = 0; x < canvasRef.current!.width; x += RESOLUTION) {
+    for (let y = 0; y < canvasRef.current!.height; y += (RESOLUTION * dpr.current)) {
+      for (let x = 0; x < canvasRef.current!.width; x += (RESOLUTION * dpr.current)) {
         const pixelIndex = (y * canvasRef.current!.width + x) * 4; // RGBA values
         const alpha = imageData.data[pixelIndex + 3];
-        // console.log("alpha", alpha)
         if (alpha > 200) {
-          const gridX = Math.floor(x / RESOLUTION);
-          const gridY = Math.floor(y / RESOLUTION);
+          const gridX = Math.floor(x / (RESOLUTION * dpr.current));
+          const gridY = Math.floor(y / (RESOLUTION * dpr.current));
           gridRef.current!.set(gridX, gridY, new Bounds())
         }
       }
@@ -64,26 +73,31 @@ export default function FallingSandOverlay() {
   }
 
   const setup = () => {
-    const gridWidth = canvasRef.current!.width / RESOLUTION;
-    const gridHeight = canvasRef.current!.height / RESOLUTION;
+    const gridWidth = canvasRef.current!.width / (RESOLUTION * dpr.current);
+    const gridHeight = canvasRef.current!.height / (RESOLUTION * dpr.current);
 
-    ctxRef.current = canvasRef.current!.getContext("2d");
     gridRef.current = new Grid(Math.floor(gridWidth), Math.floor(gridHeight), ctxRef.current!, canvasRef.current!, RESOLUTION);
 
     if (titleRef) markTextOnGrid();
 
-    canvasRef.current!.addEventListener("mousemove", (event) => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!canvasRef.current) return;
+
       let rect = canvasRef.current!.getBoundingClientRect();
-      let x = Math.floor((event.clientX - rect.left) / RESOLUTION);
-      let y = Math.floor((event.clientY - rect.top) / RESOLUTION);
-      gridRef.current!.setCircle(
-        x,
-        y,
-        () => new currentParticleType.current,
-        RADIUS, // radius
-        currentParticleType.current.addPropability
-      );
-    });
+      if (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) {
+        let x = Math.floor((event.clientX - rect.left) / (RESOLUTION));
+        let y = Math.floor((event.clientY - rect.top) / (RESOLUTION));
+        gridRef.current!.setCircle(
+          x,
+          y,
+          () => new currentParticleType.current,
+          RADIUS, // radius
+          currentParticleType.current.addPropability
+        );
+      }
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
 
     draw();
   };
