@@ -9,7 +9,7 @@ import { Grid } from "../simulation/Grid";
 import { text } from "stream/consumers";
 
 export const RESOLUTION = 2;
-export const RADIUS = 2;
+export const RADIUS = 8;
 
 export default function FallingSandOverlay() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);

@@ -22,7 +22,7 @@ interface AboutSectionProps {
 }
 
 export default function AboutSection({ aboutContent }: AboutSectionProps) {
-  const [isOpen, setIsOpen] = useState(false); // Issue here! Nav buttons aren't calling useFollower when useState(false) and not true
+  const [isOpen, setIsOpen] = useState(true); // Issue here! Nav buttons aren't calling useFollower when useState(false) and not true
   const toggleOpen = () => {
     console.log("toggle");
     setIsOpen(!isOpen);
@@ -70,7 +70,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
       <InformationOverlay toggleOpen={toggleOpen} />
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed z-50 top-0 left-0">
+          <div className="fixed z-[500] top-0 left-0">
             <motion.div className='relative h-screen w-screen flex flex-row bg-white overflow-y-scroll'
               initial={{ y: 0.8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }}>
               <div>
