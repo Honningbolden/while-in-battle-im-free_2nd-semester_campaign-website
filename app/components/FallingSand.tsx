@@ -7,8 +7,8 @@ import { Sand } from "../simulation/Particle";
 // Import simulation dependencies
 import { Grid } from "../simulation/Grid";
 
-export const RESOLUTION = 1;
-export const RADIUS = 10;
+export const RESOLUTION = 2;
+export const RADIUS = 2;
 
 export default function FallingSandOverlay() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);
