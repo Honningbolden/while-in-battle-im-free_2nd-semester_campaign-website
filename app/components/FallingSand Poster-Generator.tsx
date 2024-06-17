@@ -11,7 +11,8 @@ import { text } from "stream/consumers";
 export const RESOLUTION = 2;
 export const RADIUS = 8;
 
-const A3 = {width: 1190, height: 1684};
+const A3 = { width: 1190, height: 1684 };
+const pixelDensity = 2;
 
 export default function FallingSandPosterGenerator() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);
@@ -26,54 +27,55 @@ export default function FallingSandPosterGenerator() {
 
 
   useEffect(() => {
-    if (!hasAdjustedCanvasSize.current) {
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const parent = canvas.parentElement;
-        if (parent) {
-          dpr.current = window.devicePixelRatio || 1;
+    const canvas = canvasRef.current;
+    if (canvas && !hasAdjustedCanvasSize.current) {
+      dpr.current = window.devicePixelRatio || 1;
 
-          canvas.width = parent.clientWidth * dpr.current;
-          canvas.height = parent.clientHeight * dpr.current;
+      canvas.width = A3.width;
+      canvas.height = A3.height;
 
-          ctxRef.current = canvasRef.current!.getContext("2d");
-          if (ctxRef.current) {
-            ctxRef.current.scale(dpr.current, dpr.current);
-          }
-
-          // Adjust CSS Size to maintain layout size
-          canvas.style.width = `${parent.clientWidth}px`;
-          canvas.style.height = `${parent.clientHeight}px`;
-
-          // Mark canvas adjustment and run setup function
-          hasAdjustedCanvasSize.current = true;
-          setup();
-        }
+      ctxRef.current = canvasRef.current!.getContext("2d");
+      if (ctxRef.current) {
+        ctxRef.current.scale(pixelDensity, pixelDensity); // High PPI
       }
+
+      // Adjust CSS Size to maintain layout size
+      // This maintains the aspect ratio and ensures the canvas is fully visible
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.style.objectFit = "contain";
+      canvas.style.maxWidth = `${A3.width}px`;
+      canvas.style.maxHeight = `${A3.height}px`;
+
+      // Mark canvas adjustment and run setup function
+      hasAdjustedCanvasSize.current = true;
+      setup();
+
     }
   }, [])
 
   const markTextOnGrid = () => {
+
+    console.log(titleRef.current!)
     // Draw image
     const titleRect = titleRef.current!.getBoundingClientRect();
-    ctxRef.current!.drawImage(titleRef.current!, titleRect.x, titleRect.y + window.scrollY, titleRect.width, titleRect.height);
+
+    // ctxRef.current!.drawImage(titleRef.current!, titleRect.x, titleRect.y + window.scrollY, titleRect.width, titleRect.height);
+    ctxRef.current!.drawImage(titleRef.current!, 0, 0, canvasRef.current!.width / pixelDensity, canvasRef.current!.height / pixelDensity);
 
     // Get image data
     const imageData = ctxRef.current!.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height);
     const data = imageData.data;
 
-    for (let y = 0; y < canvasRef.current!.height; y += (RESOLUTION * dpr.current)) {
-      for (let x = 0; x < canvasRef.current!.width; x += (RESOLUTION * dpr.current)) {
-        // const pixelIndex = (y * canvasRef.current!.width + x) * 4; // RGBA values
-        // const alpha = imageData.data[pixelIndex + 3];
-
+    for (let y = 0; y < canvasRef.current!.height; y += (RESOLUTION * pixelDensity)) {
+      for (let x = 0; x < canvasRef.current!.width; x += (RESOLUTION * pixelDensity)) {
         let alphaSum = 0;
         let count = 0;
 
         const startX = x;
-        const endX = x + RESOLUTION * dpr.current;
+        const endX = x + RESOLUTION * pixelDensity;
         const startY = y;
-        const endY = y + RESOLUTION * dpr.current;
+        const endY = y + RESOLUTION * pixelDensity;
 
         for (let areaY = startY; areaY < endY; areaY++) {
           for (let areaX = startX; areaX < endX; areaX++) {
@@ -86,8 +88,8 @@ export default function FallingSandPosterGenerator() {
         const averageAlpha = alphaSum / count;
 
         if (averageAlpha > 100) {
-          const gridX = Math.round(x / (RESOLUTION * dpr.current));
-          const gridY = Math.round(y / (RESOLUTION * dpr.current));
+          const gridX = Math.round(x / (RESOLUTION * pixelDensity));
+          const gridY = Math.round(y / (RESOLUTION * pixelDensity));
           gridRef.current!.set(gridX, gridY, new Bounds())
         }
       }
@@ -95,8 +97,8 @@ export default function FallingSandPosterGenerator() {
   }
 
   const setup = () => {
-    const gridWidth = canvasRef.current!.width / (RESOLUTION * dpr.current);
-    const gridHeight = canvasRef.current!.height / (RESOLUTION * dpr.current);
+    const gridWidth = canvasRef.current!.width / (RESOLUTION * pixelDensity);
+    const gridHeight = canvasRef.current!.height / (RESOLUTION * pixelDensity);
 
     gridRef.current = new Grid(Math.round(gridWidth), Math.round(gridHeight), ctxRef.current!, canvasRef.current!, RESOLUTION);
 
@@ -106,9 +108,13 @@ export default function FallingSandPosterGenerator() {
       if (!canvasRef.current) return;
 
       let rect = canvasRef.current!.getBoundingClientRect();
+      const scaleX = canvasRef.current.width / rect.width; // Adjust for CSS scaling
+      const scaleY = canvasRef.current.height / rect.height; // Adjust for CSS scaling
+
+
       if (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) {
-        let x = Math.round((event.clientX - rect.left) / (RESOLUTION));
-        let y = Math.round((event.clientY - rect.top) / (RESOLUTION));
+        let x = Math.round((event.clientX - rect.left) * scaleX / (RESOLUTION * pixelDensity));
+        let y = Math.round((event.clientY - rect.top) * scaleY / (RESOLUTION * pixelDensity));
         gridRef.current!.setCircle(
           x,
           y,
@@ -136,10 +142,10 @@ export default function FallingSandPosterGenerator() {
 
   return (
     <>
-      <div className="absolute top-0 left-0 z-50">
+      <div className="z-50 p-20 h-full flex justify-center items-center">
         <canvas className="z-50" ref={canvasRef}></canvas>
+        <img ref={titleRef} src="/SECOND_DRAFT.svg" alt="While In Battle I'm Free, Never Free To Rest" className="absolute top-0 z-50 h-full p-20" />
       </div>
-      <img ref={titleRef} src="/Title_NEW.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50 m-32" />
     </>
   )
 }
