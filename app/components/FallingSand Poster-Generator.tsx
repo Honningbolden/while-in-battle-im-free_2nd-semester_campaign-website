@@ -8,7 +8,7 @@ import { Sand, Bounds } from "@/app/components/simulation/Particle";
 import { Grid } from "@/app/components/simulation/Grid";
 import { text } from "stream/consumers";
 
-export const RESOLUTION = 2;
+export const RESOLUTION = 1;
 export const RADIUS = 8;
 
 const A3 = { width: 1190, height: 1684 };
@@ -17,6 +17,8 @@ const pixelDensity = 2;
 export default function FallingSandPosterGenerator() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);
   let dpr = useRef<number>(1);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const currentParticleType = useRef(Sand);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,8 +57,6 @@ export default function FallingSandPosterGenerator() {
   }, [])
 
   const markTextOnGrid = () => {
-
-    console.log(titleRef.current!)
     // Draw image
     const titleRect = titleRef.current!.getBoundingClientRect();
 
@@ -80,14 +80,15 @@ export default function FallingSandPosterGenerator() {
         for (let areaY = startY; areaY < endY; areaY++) {
           for (let areaX = startX; areaX < endX; areaX++) {
             const pixelIndex = (areaY * canvasRef.current!.width + areaX) * 4;
-            alphaSum += imageData.data[pixelIndex + 3];
+            let alpha = imageData.data[pixelIndex + 3];
+            alphaSum += alpha > 0 ? alpha : 0;
             count++;
           }
         }
 
         const averageAlpha = alphaSum / count;
 
-        if (averageAlpha > 100) {
+        if (averageAlpha > 10) {
           const gridX = Math.round(x / (RESOLUTION * pixelDensity));
           const gridY = Math.round(y / (RESOLUTION * pixelDensity));
           gridRef.current!.set(gridX, gridY, new Bounds())
@@ -141,11 +142,26 @@ export default function FallingSandPosterGenerator() {
     requestAnimationFrame(draw);
   }
 
+  const downloadCanvas = () => {
+    if (!canvasRef.current) return;
+    const dataUrl = canvasRef.current.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.download = "canvas-image.png";
+    link.href = dataUrl;
+    containerRef.current!.appendChild(link);
+    link.click();
+    containerRef.current!.removeChild(link);
+  }
+
   return (
     <>
-      <div className="z-50 p-20 h-full flex justify-center items-center">
+      <div ref={containerRef} className="z-50 p-20 h-full flex justify-center items-center">
         <canvas className="z-50" ref={canvasRef}></canvas>
         <img ref={titleRef} src="/SECOND_DRAFT.svg" alt="While In Battle I'm Free, Never Free To Rest" className="absolute top-0 z-50 h-full p-20" />
+
+        <button onClick={downloadCanvas} className="absolute bottom-10 right-10 z-50 p-2 bg-blue-500 text-white rounded">
+          Download Canvas
+        </button>
       </div>
     </>
   )
