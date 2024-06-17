@@ -1,7 +1,7 @@
-import HeroSection from "./Sections/heroSection";
-import TicketInformation from "./Sections/ticketInformation";
-import TeaserDescription from "./Sections/teaserDescription";
-import AboutSection from "./Sections/AboutSection";
+import HeroSection from "./components/Sections/heroSection";
+import TicketInformation from "./components/Sections/ticketInformation";
+import TeaserDescription from "./components/Sections/teaserDescription";
+import AboutSection from "./components/Sections/AboutSection";
 import ParallaxBackground from "./components/ParallaxBackground";
 import StickyFooter from "./components/StickyFooter";
 

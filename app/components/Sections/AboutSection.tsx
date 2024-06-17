@@ -1,6 +1,6 @@
 "use client"
 
-import { useFollowPointer } from "../utilities/use-follow-pointer";
+import { useFollowPointer } from "@/app/utilities/use-follow-pointer";
 import { motion, AnimatePresence, spring, animate, delay, usePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 

@@ -1,5 +1,5 @@
-import HSLAToRGBA, { hslaColorObj, rgbaColorObj } from "../utilities/hslaToRGBA";
-import { RESOLUTION } from "../components/FallingSand";
+import HSLAToRGBA, { hslaColorObj, rgbaColorObj } from "@/app/utilities/hslaToRGBA";
+import { RESOLUTION } from "@/app/components/FallingSand";
 
 export interface ParticleOptions {
   color?: rgbaColorObj;

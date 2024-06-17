@@ -1,4 +1,4 @@
-import Content from "../Sections/ticketInformation"
+import Content from "@/app/components/Sections/ticketInformation"
 
 export default function StickyFooter({ contentData }: any) {
   const footerHeight = 300;

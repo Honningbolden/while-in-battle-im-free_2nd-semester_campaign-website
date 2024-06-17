@@ -2,10 +2,10 @@
 
 import HSLAToRGBA, { hslaColorObj, rgbaColorObj } from "../utilities/hslaToRGBA";
 import { useEffect, useRef, useState } from "react";
-import { Sand, Bounds } from "../simulation/Particle";
+import { Sand, Bounds } from "@/app/components/simulation/Particle";
 
 // Import simulation dependencies
-import { Grid } from "../simulation/Grid";
+import { Grid } from "@/app/components/simulation/Grid";
 import { text } from "stream/consumers";
 
 export const RESOLUTION = 2;

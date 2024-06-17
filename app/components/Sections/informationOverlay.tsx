@@ -1,7 +1,8 @@
 "use client";
 
-import styles from "../styles/informationOverlay.module.css"
-import ParallaxText from "../components/ParallaxText"
+// import styles from "@/app/styles/informationOverlay.module.css"
+import styles from "@/app/styles/informationOverlay.module.css"
+import ParallaxText from "../ParallaxText";
 import { useEffect, useRef, useState } from "react";
 
 interface InformationOverlayProps {
