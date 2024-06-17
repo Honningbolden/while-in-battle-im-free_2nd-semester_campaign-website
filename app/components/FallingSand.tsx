@@ -18,6 +18,7 @@ export default function FallingSandOverlay() {
   const currentParticleType = useRef(Sand);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const titleRef = useRef<HTMLImageElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   let ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   let gridRef = useRef<Grid | null>(null);
 
@@ -114,8 +115,8 @@ export default function FallingSandOverlay() {
 
   return (
     <>
-      <img ref={titleRef} src="/Title.svg" alt="While IN Battle I'm Free, Never Free To Rest" className="z-50" />
-      <div className="absolute top-0 left-0 h-full w-full">
+      <img ref={titleRef} src="/Title.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50" />
+      <div className="absolute top-0 left-0 h-full w-full z-50">
         <canvas className="z-50" ref={canvasRef}></canvas>
       </div>
     </>

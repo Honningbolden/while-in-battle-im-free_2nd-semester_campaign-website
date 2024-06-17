@@ -2,7 +2,8 @@ import HeroSection from "./Sections/heroSection";
 import TicketInformation from "./Sections/ticketInformation";
 import TeaserDescription from "./Sections/teaserDescription";
 import AboutSection from "./Sections/AboutSection";
-
+import ParallaxBackground from "./components/ParallaxBackground";
+import StickyFooter from "./components/StickyFooter";
 
 async function fetchContentJSON() {
   const baseUrl = 'http://localhost:3000';
@@ -18,17 +19,21 @@ async function fetchContentJSON() {
 export default async function Home() {
   const { ticketInformation, aboutContent } = await fetchContentJSON();
 
+
   return (
     <>
-      <main style={{
+      {/* <main style={{
         backgroundImage: 'url("/kiwihug-zGZYQQVmXw0-unsplash-2.jpg")',
         backgroundSize: 'cover',
         backgroundPosition: 'center'
-      }}>
-        {/* <AboutSection aboutContent={aboutContent} /> */}
+      }}> */}
+      <main className="relative">
+        <ParallaxBackground/>
+        <AboutSection aboutContent={aboutContent} />
         <HeroSection />
-        <TicketInformation content={ticketInformation} />
-        <TeaserDescription />
+        <StickyFooter contentData={ticketInformation}/>
+        {/* <TicketInformation content={ticketInformation} /> */}
+        {/* <TeaserDescription /> */}
       </main>
     </>
   );

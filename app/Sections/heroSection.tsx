@@ -5,7 +5,7 @@ import styles from "../styles/hero.module.css"
 export default function HeroSection() {
   return (
     <>
-      <section className="relative">
+      <section className="relative z-[100]">
         <section className={`title-type antialiased leading-quart h-screen flex flex-col justify-center items-center`}>
           {/* <div className={`flex flex-col justify-center items-center`}>
             <h1 className={`${styles.top} font-medium`}>While In Battle I'm Free,</h1>
