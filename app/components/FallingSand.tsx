@@ -8,7 +8,7 @@ import { Sand, Bounds } from "../simulation/Particle";
 import { Grid } from "../simulation/Grid";
 import { text } from "stream/consumers";
 
-export const RESOLUTION = 3;
+export const RESOLUTION = 2;
 export const RADIUS = 2;
 
 export default function FallingSandOverlay() {
@@ -62,9 +62,28 @@ export default function FallingSandOverlay() {
 
     for (let y = 0; y < canvasRef.current!.height; y += (RESOLUTION * dpr.current)) {
       for (let x = 0; x < canvasRef.current!.width; x += (RESOLUTION * dpr.current)) {
-        const pixelIndex = (y * canvasRef.current!.width + x) * 4; // RGBA values
-        const alpha = imageData.data[pixelIndex + 3];
-        if (alpha > 100) {
+        // const pixelIndex = (y * canvasRef.current!.width + x) * 4; // RGBA values
+        // const alpha = imageData.data[pixelIndex + 3];
+
+        let alphaSum = 0;
+        let count = 0;
+
+        const startX = x;
+        const endX = x + RESOLUTION * dpr.current;
+        const startY = y;
+        const endY = y + RESOLUTION * dpr.current;
+
+        for (let areaY = startY; areaY < endY; areaY++) {
+          for (let areaX = startX; areaX < endX; areaX++) {
+            const pixelIndex = (areaY * canvasRef.current!.width + areaX) * 4;
+            alphaSum += imageData.data[pixelIndex + 3];
+            count++;
+          }
+        }
+
+        const averageAlpha = alphaSum / count;
+
+        if (averageAlpha > 100) {
           const gridX = Math.round(x / (RESOLUTION * dpr.current));
           const gridY = Math.round(y / (RESOLUTION * dpr.current));
           gridRef.current!.set(gridX, gridY, new Bounds())
@@ -118,7 +137,7 @@ export default function FallingSandOverlay() {
       <div className="absolute top-0 left-0 h-full w-full z-50">
         <canvas className="z-50" ref={canvasRef}></canvas>
       </div>
-      <img ref={titleRef} src="/Title.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50" />
+      <img ref={titleRef} src="/Title_NEW.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50 m-32" />
     </>
   )
 }
