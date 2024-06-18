@@ -7,7 +7,7 @@ import StickyFooter from "./components/StickyFooter";
 import ImageGallery from "./components/ImageGallery";
 
 async function fetchContentJSON() {
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const res = await fetch(`${baseUrl}/cms/content.json`, { cache: 'no-store' });
   const data = await res.json();
   if (!res.ok) {
