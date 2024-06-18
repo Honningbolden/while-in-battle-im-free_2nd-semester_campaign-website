@@ -16,6 +16,9 @@ const config: Config = {
       lineHeight: {
         'quart': '0.75',
         'half': '0.5',
+      },
+      backgroundColor: {
+        'primary-blue': '#0d75ff',
       }
     },
   },
