@@ -9,7 +9,7 @@ import img_1 from "@/public/gallery/1.png"
 import img_2 from "@/public/gallery/2.png"
 import img_3 from "@/public/gallery/3.png"
 import img_4 from "@/public/gallery/4.png"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import next from "next";
 
 export default function ImageGallery() {
@@ -22,6 +22,16 @@ export default function ImageGallery() {
     setDirection(direction);
     setCurrentIndex(index);
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      console.log(currentIndex);
+      setCurrentIndex(currentIndex => (currentIndex === images.length - 1 ? 0 : currentIndex + 1));
+      console.log(currentIndex);
+    }, 4000);
+
+    return () => clearInterval(intervalId);
+  }, [images.length]);
 
   const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
   const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
@@ -48,7 +58,7 @@ export default function ImageGallery() {
     <div className="relative h-screen flex bg-black flex-col justify-center items-center gap-4">
       <div className=" whitespace-nowrap flex flex-row items-center justify-center flex-shrink-0">
         {[prevIndex, currentIndex, nextIndex].map((index) => (
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="popLayout">
             <motion.div className="m-4 bg-blue-100 max-w-screen-md aspect-square flex-shrink-0 overflow-hidden"
               key={`${index}-motion`}
               custom={direction}
@@ -56,8 +66,9 @@ export default function ImageGallery() {
               initial="enter"
               animate="center"
               exit="exit"
+              style={{scale: currentIndex === index ? 1 : 0.8}}
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
+                x: { type: "spring", stiffness: 600, damping: 80 },
                 opacity: { duration: 0.2 },
               }}
             >
@@ -66,7 +77,7 @@ export default function ImageGallery() {
           </AnimatePresence>
         ))}
       </div>
-      <ul className=" flex flex-row items-center justify-evenly full p-4 gap-4">
+      <ul className=" flex flex-row items-center justify-evenly full p-4 gap-4 text-white">
         {images.map((image, index) => (
           <motion.li key={index} onClick={() => toggle(index)}
             initial={{
@@ -80,8 +91,7 @@ export default function ImageGallery() {
             }}
             animate={{
               opacity: currentIndex === index ? 0.8 : 0.5,
-              backgroundColor: currentIndex === index ? "#0a0a0a" : "transparent",
-              scale: currentIndex === index ? 1 : 1 - 0.1 * Math.abs(currentIndex - index),
+              scale: currentIndex === index ? 1 : 1 - (0.3 * Math.abs(currentIndex - index))/Math.sqrt(2),
             }} />
         ))}
       </ul>
