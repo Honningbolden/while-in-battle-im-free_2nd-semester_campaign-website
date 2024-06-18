@@ -76,14 +76,15 @@ export default function FallingSandOverlay() {
         for (let areaY = startY; areaY < endY; areaY++) {
           for (let areaX = startX; areaX < endX; areaX++) {
             const pixelIndex = (areaY * canvasRef.current!.width + areaX) * 4;
-            alphaSum += imageData.data[pixelIndex + 3];
+            let alpha = imageData.data[pixelIndex + 3];
+            alphaSum += alpha > 200 ? alpha : 0;
             count++;
           }
         }
 
         const averageAlpha = alphaSum / count;
 
-        if (averageAlpha > 100) {
+        if (averageAlpha > 200) {
           const gridX = Math.round(x / (RESOLUTION * dpr.current));
           const gridY = Math.round(y / (RESOLUTION * dpr.current));
           gridRef.current!.set(gridX, gridY, new Bounds())
@@ -137,7 +138,7 @@ export default function FallingSandOverlay() {
       <div className="absolute top-0 left-0 h-full w-full z-50">
         <canvas className="z-50" ref={canvasRef}></canvas>
       </div>
-      <img ref={titleRef} src="/Title_NEW.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50 m-32" />
+      <img ref={titleRef} src="/Title_ALT.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50 w-1/3" />
     </>
   )
 }

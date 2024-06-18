@@ -1,4 +1,5 @@
 import FallingSandOverlay from "../FallingSand"
+import SponsorOverlay from "./sponsorOverlay"
 import styles from "@/app/styles/hero.module.css"
 import ParallaxBackground from "../ParallaxBackground"
 
@@ -18,6 +19,7 @@ export default function HeroSection() {
             </div>
           </div> */}
         <FallingSandOverlay />
+        <SponsorOverlay/>
         </section>
       </section>
     </>

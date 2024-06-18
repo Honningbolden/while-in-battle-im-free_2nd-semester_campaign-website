@@ -27,7 +27,7 @@ export default async function Home() {
         backgroundSize: 'cover',
         backgroundPosition: 'center'
       }}> */}
-      <main className="relative overflow-visible">
+      <main className="relative overflow-x-clip">
         <ParallaxBackground/>
         <AboutSection aboutContent={aboutContent} />
         <HeroSection />

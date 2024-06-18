@@ -17,7 +17,7 @@ export default function ParallaxText({ children, baseVelocity = 100, rows = 1 }:
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
   const smoothVelocity = useSpring(scrollVelocity, {
-    damping: 50,
+    damping: 100,
     stiffness: 400,
   });
   const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 2], {
