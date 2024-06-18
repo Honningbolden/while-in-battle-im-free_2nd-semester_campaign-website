@@ -50,7 +50,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
     initial: {
       height: 0,
       width: 0,
-      backgroundColor: "#f0f0f0",
+      backgroundColor: "#0d75ff",
       boxShadow: "inset 0 0 0 30px #000000",
       borderRadius: 50,
     },
