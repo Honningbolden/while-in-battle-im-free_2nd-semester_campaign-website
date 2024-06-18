@@ -18,7 +18,7 @@ const config: Config = {
         'half': '0.5',
       },
       backgroundColor: {
-        'primary-blue': '#0d75ff',
+        'primary-blue': '#0024cc',
       }
     },
   },

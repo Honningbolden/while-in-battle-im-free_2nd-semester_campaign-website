@@ -50,7 +50,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
     initial: {
       height: 0,
       width: 0,
-      backgroundColor: "#0d75ff",
+      backgroundColor: "#0024cc",
       boxShadow: "inset 0 0 0 30px #000000",
       borderRadius: 50,
     },
@@ -85,7 +85,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
                       variants={navButtonVariants}
                       whileHover="hover"
                       whileTap="tap"
-                      animate={{ backgroundColor: section === selectedTab ? "#ffffff00" : "#007bff", color: section === selectedTab ? "#000000" : "#ffffff", scale: section === selectedTab ? 1 : 0.7 }}
+                      animate={{ backgroundColor: section === selectedTab ? "#ffffff00" : "#0024cc", color: section === selectedTab ? "#000000" : "#ffffff", scale: section === selectedTab ? 1 : 0.7 }}
                       transition={{ type: "spring", damping: 20, stiffness: 400 }}
                       className={`cursor-pointer size-48 rounded-full flex justify-center items-center text-center`}
                       onClick={() => setSelectedTab(section)}>

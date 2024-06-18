@@ -25,7 +25,7 @@ export class Particle {
 }
 
 export class Sand extends Particle implements IParticle {
-  static baseColor: hslaColorObj = { h: 38.4, s: 50.7, l: 60.2, a: 1 };
+  static baseColor: hslaColorObj = { h: 34.6, s: 97.4, l: 70, a: 1 };//{ h: 38.4, s: 50.7, l: 60.2, a: 1 };
   static addPropability = 0.5;
 
   maxSpeed: number;
@@ -86,7 +86,7 @@ export class Bounds extends Particle {
 }
 
 export const varyColor = (color: hslaColorObj): rgbaColorObj => {
-  let saturation = color.s + Math.floor(Math.random() * 20) - 20;
+  let saturation = color.s + Math.floor(Math.random() * 20) - 40;
   saturation = Math.max(0, Math.min(saturation, 100));
   let lightness = color.l + Math.floor(Math.random() * 20) - 10;
   lightness = Math.max(0, Math.min(lightness, 100));

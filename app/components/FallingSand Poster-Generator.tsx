@@ -159,7 +159,7 @@ export default function FallingSandPosterGenerator() {
     <>
       <div ref={containerRef} className="z-50 p-20 h-full flex justify-center items-center">
         <canvas className="z-50" ref={canvasRef}></canvas>
-        <img ref={titleRef} src="/SECOND_DRAFT.svg" alt="While In Battle I'm Free, Never Free To Rest" className="absolute top-0 z-50 h-full p-20" />
+        <img ref={titleRef} src="/SECOND_DRAFT_2.svg" alt="While In Battle I'm Free, Never Free To Rest" className="absolute top-0 z-50 h-full p-20" />
 
         <button onClick={downloadCanvas} className="absolute bottom-10 right-10 z-50 p-2 bg-blue-500 text-white rounded">
           Download Canvas
