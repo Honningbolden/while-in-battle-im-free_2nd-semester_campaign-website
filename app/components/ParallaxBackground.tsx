@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Background from "@/public/kiwihug-zGZYQQVmXw0-unsplash-2.jpg";
+import Background from "@/public/Wave_Pattern.png";
 
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";

@@ -81,14 +81,14 @@ export default function FallingSandPosterGenerator() {
           for (let areaX = startX; areaX < endX; areaX++) {
             const pixelIndex = (areaY * canvasRef.current!.width + areaX) * 4;
             let alpha = imageData.data[pixelIndex + 3];
-            alphaSum += alpha > 0 ? alpha : 0;
+            alphaSum += alpha > 200 ? alpha : 0;
             count++;
           }
         }
 
         const averageAlpha = alphaSum / count;
 
-        if (averageAlpha > 10) {
+        if (averageAlpha > 200) {
           const gridX = Math.round(x / (RESOLUTION * pixelDensity));
           const gridY = Math.round(y / (RESOLUTION * pixelDensity));
           gridRef.current!.set(gridX, gridY, new Bounds())
@@ -144,6 +144,8 @@ export default function FallingSandPosterGenerator() {
 
   const downloadCanvas = () => {
     if (!canvasRef.current) return;
+    markTextOnGrid();
+
     const dataUrl = canvasRef.current.toDataURL("image/png");
     const link = document.createElement("a");
     link.download = "canvas-image.png";
