@@ -35,6 +35,8 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
   const refs = aboutContent.map(() => useRef(null));
   const positions = refs.map(ref => useFollowPointer(ref));
 
+  // UseEffect til ref useFollowPointer
+
   const navButtonVariants = {
     tap: {
       scale: 0.7,

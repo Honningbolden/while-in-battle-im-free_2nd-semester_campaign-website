@@ -19,9 +19,12 @@ export default function ImageGallery() {
     setCurrentIndex(index);
   }
 
+  const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+  const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+
   return (
     <div className="relative h-screen flex bg-black flex-col justify-center items-center gap-4">
-      <div className=" whitespace-nowrap flex flex-row items-center justify-start flex-shrink-0">
+      <div className=" whitespace-nowrap flex flex-row items-center justify-center flex-shrink-0">
         {images.map((image, index) => (
           <div key={index} className="m-4 bg-blue-100 max-w-screen-md aspect-square flex-shrink-0 overflow-hidden">
             <Image src={images[index]} alt="Gallery Image" placeholder="blur" loading="lazy" style={{ objectFit: "cover" }} />
@@ -36,8 +39,6 @@ export default function ImageGallery() {
               width: "20px",
               borderRadius: "100%",
               border: "2px solid #ffffff",
-              // backgroundColor: "transparent",
-              // opacity: 0.5,
             }}
             whileHover={{
               scale: 1.2,
@@ -45,7 +46,8 @@ export default function ImageGallery() {
             animate={{
               opacity: currentIndex === index ? 0.8 : 0.5,
               backgroundColor: currentIndex === index ? "#0a0a0a" : "transparent",
-            }}/>
+              scale: currentIndex === index ? 1 : 1 - 0.1 * Math.abs(currentIndex - index),
+            }} />
         ))}
       </ul>
     </div>
