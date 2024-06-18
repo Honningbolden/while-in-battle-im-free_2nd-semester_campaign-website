@@ -21,7 +21,7 @@ export default function FallingSandPosterGenerator() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const currentParticleType = useRef(Sand);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);find
   const titleRef = useRef<HTMLImageElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   let ctxRef = useRef<CanvasRenderingContext2D | null>(null);
