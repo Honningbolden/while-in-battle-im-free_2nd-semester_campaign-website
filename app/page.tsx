@@ -4,6 +4,7 @@ import TeaserDescription from "./components/Sections/teaserDescription";
 import AboutSection from "./components/Sections/AboutSection";
 import ParallaxBackground from "./components/ParallaxBackground";
 import StickyFooter from "./components/StickyFooter";
+import ImageGallery from "./components/ImageGallery";
 
 async function fetchContentJSON() {
   const baseUrl = 'http://localhost:3000';
@@ -22,18 +23,12 @@ export default async function Home() {
 
   return (
     <>
-      {/* <main style={{
-        backgroundImage: 'url("/kiwihug-zGZYQQVmXw0-unsplash-2.jpg")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}> */}
       <main className="relative overflow-x-clip">
         <ParallaxBackground/>
         <AboutSection aboutContent={aboutContent} />
         <HeroSection />
         <StickyFooter contentData={ticketInformation}/>
-        {/* <TicketInformation content={ticketInformation} /> */}
-        {/* <TeaserDescription /> */}
+        <ImageGallery/>
       </main>
     </>
   );
