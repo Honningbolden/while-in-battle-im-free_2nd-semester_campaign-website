@@ -1,7 +1,8 @@
 import Content from "@/app/components/Sections/ticketInformation"
+import ImageGallery from "./ImageGallery";
 
 export default function StickyFooter({ contentData }: any) {
-  const footerHeight = 100;
+  const footerHeight = 30;
   return (
     <div className="overflow-visible"
       style={{
