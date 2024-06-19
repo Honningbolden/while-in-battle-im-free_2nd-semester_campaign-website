@@ -23,7 +23,7 @@ export default function StickyFooter({ contentData }: any) {
             position: 'sticky',
             top: `calc(100vh - ${footerHeight}vh)`,
           }}>
-          <div id="background" className="absolute -top-10 left-0 h-[200%] w-[120%] bg-slate-950 -z-10" />
+          <div id="background" className="absolute -top-10 left-0 h-[200%] w-[120%] bg-black -z-10" />
           <div id="test" className="h-full flex flex-col justify-center">
             <Content content={contentData} />
           </div>

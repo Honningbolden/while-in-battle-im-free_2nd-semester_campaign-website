@@ -15,7 +15,7 @@ export default function SponsorOverlay({ toggleOpen }: SponsorOverlayProps) {
     <>
       <div onClick={toggleOpen} className={`${styles.clippy} z-[200] cursor-pointer h-[20vh] w-[74vh] absolute bottom-0 left-0 bg-primary-blue mix-blend-normal stroke-black stroke-2 hover:bg-blue-500 transition-colors`}>
         <div className="absolute bottom-0 left-0 w-screen h-full ">
-          <div className="h-full body-text text-xl font-bold text-white gap-4 flex flex-col items-center justify-start">
+          <div className="h-full body-text text-xl font-bold text-primary-white gap-4 flex flex-col items-center justify-start">
             <ParallaxText baseVelocity={-1} rows={1}>Præsenteres af Metropolis</ParallaxText>
             <ParallaxText baseVelocity={1} rows={1}>Præsenteres af Metropolis</ParallaxText>
             <ParallaxText baseVelocity={-1} rows={1}>Præsenteres af Metropolis</ParallaxText>

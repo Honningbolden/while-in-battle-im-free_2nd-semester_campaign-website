@@ -18,7 +18,7 @@ export default function TicketInformation({ content }: TicketInformationProps) {
 
   return (
     <>
-      <section className="h-1/3 text-white">
+      <section className="h-1/3 text-primary-white">
         {/* <div id="background" className="absolute -bottom-10 left-0 h-[120%] w-[120%] bg-slate-950 -z-10" /> */}
         <div className="title-type h-full flex flex-row justify-evenly items-center my-auto">
           {contentEntries.map(([key, value]) => {
@@ -26,8 +26,8 @@ export default function TicketInformation({ content }: TicketInformationProps) {
               return (
                 <div key={key}>
                   <motion.div
-                    initial={{ borderRadius: 10 }}
-                    whileHover={{ color: "#454545", backgroundColor: "#f3f3f3", borderRadius: 50 }}
+                    initial={{ borderRadius: 500 }}
+                    whileHover={{ color: "#454545", backgroundColor: "#f3f3f3", borderRadius: 500 }}
                     transition={{
                       duration: 0.1,
                       type: "spring",
@@ -35,7 +35,7 @@ export default function TicketInformation({ content }: TicketInformationProps) {
                       stiffness: 400,
                       restDelta: 0.1,
                     }}
-                    className="h-20 px-12 py-4 text-2xl text-white bg-blue-800 rounded-lg cursor-pointer select-none flex justify-start items-center">
+                    className="h-20 px-12 py-4 text-2xl text-primary-white bg-primary-blue rounded-full cursor-pointer select-none flex justify-start items-center">
                     <p>{value}</p>
                   </motion.div>
                 </div>

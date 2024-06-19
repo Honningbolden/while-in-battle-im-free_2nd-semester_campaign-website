@@ -55,12 +55,12 @@ export default function ImageGallery() {
 
 
   return (
-    <div className="relative h-screen flex bg-slate-950 flex-col justify-center items-center gap-4">
+    <div className="relative h-screen flex bg-black flex-col justify-center items-center gap-4">
       <div className=" whitespace-nowrap flex flex-row items-center justify-center flex-shrink-0">
         {[prevIndex, currentIndex, nextIndex].map((index) => (
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence key={`${index}-motion`} mode="popLayout">
             <motion.div className="m-4 bg-blue-100 max-w-screen-sm aspect-square flex-shrink-0 overflow-hidden"
-              key={`${index}-motion`}
+              
               custom={direction}
               variants={variants}
               initial="enter"
@@ -77,7 +77,7 @@ export default function ImageGallery() {
           </AnimatePresence>
         ))}
       </div>
-      <ul className=" flex flex-row items-center justify-evenly full p-4 gap-4 text-white">
+      <ul className=" flex flex-row items-center justify-evenly full p-4 gap-4 text-primary-white">
         {images.map((image, index) => (
           <motion.li key={index} onClick={() => toggle(index)}
             initial={{

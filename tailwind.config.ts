@@ -19,7 +19,14 @@ const config: Config = {
       },
       backgroundColor: {
         'primary-blue': '#0024cc',
-      }
+        'primary-black': '#2D2C2A',
+        'primary-white': '#FCFCFC',
+      },
+      textColor: {
+        'primary-blue': '#0024cc',
+        'primary-black': '#2D2C2A',
+        'primary-white': '#FCFCFC',
+      },
     },
   },
   plugins: [],
