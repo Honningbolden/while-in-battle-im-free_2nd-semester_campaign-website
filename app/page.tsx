@@ -4,7 +4,7 @@ import TeaserDescription from "./components/Sections/teaserDescription";
 import AboutSection from "./components/Sections/AboutSection";
 import ParallaxBackground from "./components/ParallaxBackground";
 import StickyFooter from "./components/StickyFooter";
-import ImageGallery from "./components/ImageGallery";
+import SwipeImageGallery from "./components/SwipeImageGallery";
 
 async function fetchContentJSON() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -28,7 +28,7 @@ export default async function Home() {
         <AboutSection aboutContent={aboutContent} />
         <HeroSection />
         <StickyFooter contentData={ticketInformation}/>
-        <ImageGallery/>
+        <SwipeImageGallery/>
       </main>
     </>
   );

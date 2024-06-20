@@ -68,11 +68,11 @@ export default function ImageGallery() {
               exit="exit"
               style={{scale: currentIndex === index ? 1 : 0.8}}
               transition={{
-                x: { type: "spring", stiffness: 600, damping: 80 },
-                opacity: { duration: 0.2 },
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.5 },
               }}
             >
-              <Image src={images[index]} alt="Gallery Image" placeholder="blur" loading="lazy" style={{ objectFit: "cover" }} />
+              <Image src={images[index]} alt="Gallery Image" priority objectFit="cover" />
             </motion.div>
           </AnimatePresence>
         ))}

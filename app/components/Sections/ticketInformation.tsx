@@ -40,7 +40,7 @@ export default function TicketInformation({ content }: TicketInformationProps) {
                       restDelta: 0.1,
                     }}
                     onClick={() => redirectToTicketSite()}
-                    className="h-20 px-12 py-4 text-2xl text-primary-white bg-primary-blue rounded-full cursor-pointer select-none flex justify-start items-center">
+                    className="h-20 px-12 py-4 body-text text-3xl text-primary-white bg-primary-blue rounded-full cursor-pointer select-none flex justify-start items-center">
                     <p>{value}</p>
                   </motion.button>
                 </div>
