@@ -8,11 +8,11 @@ import { Sand, Bounds } from "@/app/components/simulation/Particle";
 import { Grid } from "@/app/components/simulation/Grid";
 import { text } from "stream/consumers";
 
-export const RESOLUTION = 1;
+export const RESOLUTION = 2;
 export const RADIUS = 8;
 
 const A3 = { width: 1190, height: 1684 };
-const pixelDensity = 2;
+const pixelDensity = 8;
 
 export default function FallingSandPosterGenerator() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);
@@ -31,10 +31,10 @@ export default function FallingSandPosterGenerator() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas && !hasAdjustedCanvasSize.current) {
-      dpr.current = window.devicePixelRatio || 1;
+      dpr.current = window.devicePixelRatio || 1; 
 
-      canvas.width = A3.width;
-      canvas.height = A3.height;
+      canvas.width = A3.width * pixelDensity;
+      canvas.height = A3.height * pixelDensity;
 
       ctxRef.current = canvasRef.current!.getContext("2d");
       if (ctxRef.current) {
@@ -46,8 +46,8 @@ export default function FallingSandPosterGenerator() {
       canvas.style.width = "100%";
       canvas.style.height = "100%";
       canvas.style.objectFit = "contain";
-      canvas.style.maxWidth = `${A3.width}px`;
-      canvas.style.maxHeight = `${A3.height}px`;
+      // canvas.style.maxWidth = `${A3.width}px`;
+      // canvas.style.maxHeight = `${A3.height}px`;
 
       // Mark canvas adjustment and run setup function
       hasAdjustedCanvasSize.current = true;
@@ -145,6 +145,8 @@ export default function FallingSandPosterGenerator() {
   const downloadCanvas = () => {
     if (!canvasRef.current) return;
 
+    markTextOnGrid();
+
     // Create temporary canvas
     const tempCanvas = document.createElement('canvas');
     const tempCtx = tempCanvas.getContext('2d');
@@ -171,7 +173,7 @@ export default function FallingSandPosterGenerator() {
     <>
       <div ref={containerRef} className="z-50 p-20 h-full flex justify-center items-center">
         <canvas className="z-50" ref={canvasRef}></canvas>
-        <img ref={titleRef} src="/SECOND_DRAFT_2.svg" alt="While In Battle I'm Free, Never Free To Rest" className="absolute top-0 z-50 h-full p-20" />
+        <img ref={titleRef} src="/SRA3_POSTER.svg" alt="While In Battle I'm Free, Never Free To Rest" className="absolute top-0 z-50 h-full p-20" />
 
         <button onClick={downloadCanvas} className="absolute bottom-10 right-10 z-50 p-2 bg-blue-500 text-white rounded">
           Download Canvas
