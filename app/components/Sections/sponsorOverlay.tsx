@@ -5,15 +5,12 @@ import styles from "@/app/styles/SponsorOverlay.module.css"
 import ParallaxText from "../ParallaxText";
 import { useEffect, useRef, useState } from "react";
 
-interface SponsorOverlayProps {
-  toggleOpen?: () => void;
-}
-
-export default function SponsorOverlay({ toggleOpen }: SponsorOverlayProps) {
+export default function SponsorOverlay() {
+  const openLink = () => window.location.href = "https://www.metropolis.dk";
 
   return (
     <>
-      <div onClick={toggleOpen} className={`${styles.clippy} z-[200] cursor-pointer h-[20vh] w-[74vh] absolute bottom-0 left-0 bg-primary-blue mix-blend-normal stroke-black stroke-2 hover:bg-blue-500 transition-colors`}>
+      <div onClick={openLink} className={`${styles.clippy} z-[200] cursor-pointer h-[20vh] w-[74vh] absolute bottom-0 left-0 bg-primary-blue mix-blend-normal stroke-black stroke-2 hover:bg-blue-500 transition-colors`}>
         <div className="absolute bottom-0 left-0 w-screen h-full ">
           <div className="h-full body-text text-xl font-bold text-primary-white gap-4 flex flex-col items-center justify-start">
             <ParallaxText baseVelocity={-1} rows={1}>Præsenteres af Metropolis</ParallaxText>

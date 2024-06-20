@@ -1,7 +1,7 @@
 "use client"
 
 import { useFollowPointer } from "@/app/utilities/use-follow-pointer";
-import { motion, AnimatePresence, spring, animate, delay, usePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionValue } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 
 import InformationOverlay from "./informationOverlay";
@@ -21,21 +21,17 @@ interface AboutSectionProps {
   aboutContent: Section[];
 }
 
+interface Position {
+  x: MotionValue<any>;
+  y: MotionValue<any>;
+}
+
 export default function AboutSection({ aboutContent }: AboutSectionProps) {
   const [isOpen, setIsOpen] = useState(true); // Issue here! Nav buttons aren't calling useFollower when useState(false) and not true
-  const toggleOpen = () => {
-    console.log("toggle");
-    setIsOpen(!isOpen);
-  };
-
+  const toggleOpen = () => setIsOpen(!isOpen);
   const [selectedTab, setSelectedTab] = useState(aboutContent[0]);
-
-
-  const [isPresent, safeToRemove] = usePresence();
   const refs = aboutContent.map(() => useRef(null));
-  const positions = refs.map(ref => useFollowPointer(ref));
-
-  // UseEffect til ref useFollowPointer
+  let positions = refs.map(ref => useFollowPointer(ref));
 
   const navButtonVariants = {
     tap: {
@@ -76,11 +72,15 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
             <motion.div className='relative h-screen w-screen flex flex-row bg-white overflow-y-scroll'
               initial={{ y: 0.8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }}>
               <div>
+                
                 <ul id='nav' className='absolute top-0 z-50 h-full flex flex-col items-start justify-center gap-8'>
                   {aboutContent.map((section, index) => (
                     <motion.li drag dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
                       ref={refs[index]}
-                      style={{ x: positions[index].x, y: positions[index].y }}
+                      style={{
+                        x: positions[index]?.x,
+                        y: positions[index]?.y,
+                      }}
                       key={index}
                       variants={navButtonVariants}
                       whileHover="hover"

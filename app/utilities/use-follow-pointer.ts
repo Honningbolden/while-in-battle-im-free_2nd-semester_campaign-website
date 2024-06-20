@@ -11,13 +11,15 @@ export function useFollowPointer(ref: RefObject<HTMLElement>) {
   const maxDistance = 50;
 
   useEffect(() => {
-    console.log("useFollowPointer called")
     if (!ref.current) return;
 
+    const element = ref.current;
+
     const handlePointerMove = ({ pageX, pageY }: MouseEvent) => {
-      const element = ref.current!;
-      const elementCenterX = element.offsetLeft + element.offsetWidth/2;
-      const elementCenterY = element.offsetTop + element.offsetHeight/2;
+      if (!element) return;
+
+      const elementCenterX = element.offsetLeft + element.offsetWidth / 2;
+      const elementCenterY = element.offsetTop + element.offsetHeight / 2;
 
       const deltaX = pageX - elementCenterX;
       const deltaY = pageY - elementCenterY;
@@ -37,7 +39,9 @@ export function useFollowPointer(ref: RefObject<HTMLElement>) {
 
     window.addEventListener("pointermove", handlePointerMove);
 
-    return () => window.removeEventListener("pointermove", handlePointerMove);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
   }, [ref]);
 
   return { x, y };
