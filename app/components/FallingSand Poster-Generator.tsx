@@ -144,15 +144,27 @@ export default function FallingSandPosterGenerator() {
 
   const downloadCanvas = () => {
     if (!canvasRef.current) return;
-    markTextOnGrid();
 
-    const dataUrl = canvasRef.current.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.download = "canvas-image.png";
-    link.href = dataUrl;
-    containerRef.current!.appendChild(link);
-    link.click();
-    containerRef.current!.removeChild(link);
+    // Create temporary canvas
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = canvasRef.current.width;
+    tempCanvas.height = canvasRef.current.height;
+
+    console.log(tempCanvas.width, tempCanvas.height);
+
+    // Ensure the context and the original canvas are available
+    if (tempCtx && canvasRef.current) {
+      tempCtx.drawImage(canvasRef.current, 0, 0, tempCanvas.width, tempCanvas.height);
+
+      const dataUrl = tempCanvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = "canvas-image.png";
+      link.href = dataUrl;
+      containerRef.current!.appendChild(link);
+      link.click();
+      containerRef.current!.removeChild(link);
+    }
   }
 
   return (
