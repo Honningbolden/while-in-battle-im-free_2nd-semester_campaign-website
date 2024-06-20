@@ -25,7 +25,7 @@ export default function TicketInformation({ content }: TicketInformationProps) {
             if (key === 'callToAction') {
               return (
                 <div key={key}>
-                  <motion.div
+                  <motion.button
                     initial={{ borderRadius: 500 }}
                     whileHover={{ color: "#454545", backgroundColor: "#f3f3f3", borderRadius: 500 }}
                     transition={{
@@ -35,9 +35,10 @@ export default function TicketInformation({ content }: TicketInformationProps) {
                       stiffness: 400,
                       restDelta: 0.1,
                     }}
+                    
                     className="h-20 px-12 py-4 text-2xl text-primary-white bg-primary-blue rounded-full cursor-pointer select-none flex justify-start items-center">
                     <p>{value}</p>
-                  </motion.div>
+                  </motion.button>
                 </div>
               )
             } else {
