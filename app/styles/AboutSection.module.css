@@ -1,0 +1,7 @@
+div.clippy {
+  clip-path: url(#svg-mask);
+}
+
+.svgFilter {
+  filter: url(#displacementFilter);
+}
