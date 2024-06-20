@@ -16,6 +16,10 @@ interface TicketInformationProps {
 export default function TicketInformation({ content }: TicketInformationProps) {
   const contentEntries = Object.entries(content);
 
+  const redirectToTicketSite = () => {
+    window.location.href = "https://www.eventim-light.com/dk/a/6268ebc70e2f6b59c13b0fac/s/6655dc75e820523242408abe?lang=da";
+  }
+
   return (
     <>
       <section className="h-1/3 text-primary-white">
@@ -35,7 +39,7 @@ export default function TicketInformation({ content }: TicketInformationProps) {
                       stiffness: 400,
                       restDelta: 0.1,
                     }}
-                    
+                    onClick={() => redirectToTicketSite()}
                     className="h-20 px-12 py-4 text-2xl text-primary-white bg-primary-blue rounded-full cursor-pointer select-none flex justify-start items-center">
                     <p>{value}</p>
                   </motion.button>
