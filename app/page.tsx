@@ -28,7 +28,7 @@ export default async function Home() {
         <AboutSection aboutContent={aboutContent} />
         <HeroSection />
         <StickyFooter contentData={ticketInformation}/>
-        <SwipeImageGallery/>
+        {/* <SwipeImageGallery/> */}
       </main>
     </>
   );

@@ -65,24 +65,31 @@ export default function SwipeImageGallery() {
   }
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-primary-black">
-      <motion.div
-        drag="x"
-        dragConstraints={{
-          left: 0,
-          right: 0,
-        }}
-        style={{
-          x: dragX,
-        }}
-        animate={{
-          translateX: `-${imgIndex * 100}%`,
-        }}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        className="flex items-center cursor-grab active:cursor-grabbing">
-        <Images imgIndex={imgIndex}/>
-      </motion.div>
+    <div className="flex flex-col justify-center items-center gap-4 h-3/5 m-24 bg-black">
+      <div className="relative min-h-full aspect-square max-w-screen-sm overflow-hidden">
+        <motion.div
+          drag="x"
+          dragConstraints={{
+            left: 0,
+            right: 0,
+          }}
+          style={{
+            x: dragX,
+          }}
+          animate={{
+            translateX: `-${imgIndex * 100}%`,
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 80,
+          }}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          className="flex items-center cursor-grab active:cursor-grabbing rounded-lg min-h-full">
+          <Images imgIndex={imgIndex} />
+        </motion.div>
+      </div>
       <Dots
         imgIndex={imgIndex}
         setImgIndex={setImgIndex}
@@ -103,16 +110,8 @@ const Images = ({ imgIndex }: { imgIndex: number }) => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
-            className="aspect-square w-screen shrink-0 rounded-xl bg-neutral-800 object-cover"
-            animate={{ scale: index === imgIndex ? 0.9 : 0.8 }}
-            transition={{
-              type: "spring",
-              mass: 3,
-              stiffness: 300,
-              damping: 80,
-            }}
+            className="aspect-square w-full shrink-0 bg-neutral-800 object-top"
           >
-
           </motion.div>)
       })}
     </>
