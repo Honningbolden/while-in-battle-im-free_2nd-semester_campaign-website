@@ -1,5 +1,6 @@
 "use client"
 
+import NavItem from "../NavItem";
 import styles from "@/app/styles/AboutSection.module.css"
 import { useFollowPointer } from "@/app/utilities/use-follow-pointer";
 import { motion, AnimatePresence, MotionValue } from "framer-motion";
@@ -12,7 +13,7 @@ interface Article {
   paragraphs: string[];
 }
 
-interface Section {
+export interface Section {
   title: string,
   articles: Article[];
   imgUrl?: string,
@@ -28,20 +29,13 @@ interface Position {
 }
 
 export default function AboutSection({ aboutContent }: AboutSectionProps) {
-  const [isOpen, setIsOpen] = useState(true); // Issue here! Nav buttons aren't calling useFollower when useState(false) and not true
+  const [isOpen, setIsOpen] = useState(false); // Issue here! Nav buttons aren't calling useFollower when useState(false) and not true
   const toggleOpen = () => setIsOpen(!isOpen);
   const [selectedTab, setSelectedTab] = useState(aboutContent[0]);
-  const refs = aboutContent.map(() => useRef(null));
-  let positions = refs.map(ref => useFollowPointer(ref));
 
-  const navButtonVariants = {
-    tap: {
-      scale: 0.7,
-    },
-    hover: {
-      scale: 1,
-    },
-  };
+  const toggleSection = (section: Section) => {
+    setSelectedTab(section);
+  }
 
   const closeButtonVariants = {
     initial: {
@@ -68,7 +62,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
     <>
       <InformationOverlay toggleOpen={toggleOpen} />
       <AnimatePresence>
-        {/* {isOpen && ( */}
+        {isOpen && (
         <div
           className={`${styles.clippy} fixed z-[500] top-0 left-0 overflow-hidden`}>
           <motion.div className='relative h-screen w-screen flex flex-row bg-white overflow-y-scroll'
@@ -77,24 +71,12 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
 
               <ul id='nav' className='absolute top-0 z-50 h-full flex flex-col items-start justify-center gap-8'>
                 {aboutContent.map((section, index) => (
-                  <motion.li drag dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-                    ref={refs[index]}
-                    style={{
-                      x: positions[index]?.x,
-                      y: positions[index]?.y,
-                    }}
-                    key={index}
-                    variants={navButtonVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    animate={{ backgroundColor: section === selectedTab ? "#ffffff00" : "#0024cc", color: section === selectedTab ? "#000000" : "#ffffff", scale: section === selectedTab ? 1 : 0.7 }}
-                    transition={{ type: "spring", damping: 20, stiffness: 400 }}
-                    className={`cursor-pointer size-48 rounded-full flex justify-center items-center text-center`}
-                    onClick={() => setSelectedTab(section)}>
-                    <h1 className="button-text font-bold text-3xl">
-                      {section.title}
-                    </h1>
-                  </motion.li>
+                  <NavItem
+                  key={index}
+                  toggleSection={() => toggleSection(section)}
+                  isSelected={section === selectedTab}
+                  label={section.title}
+                  />
                 ))}
               </ul>
               <motion.div className="absolute top-0 left-0 m-8 z-50"
@@ -139,7 +121,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
             </div>
           </motion.div >
         </div>
-        {/* )} */}
+        )}
       </AnimatePresence >
     </>
   )
