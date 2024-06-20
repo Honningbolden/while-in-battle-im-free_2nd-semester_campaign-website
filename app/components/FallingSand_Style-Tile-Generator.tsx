@@ -12,12 +12,12 @@ export const RESOLUTION = 1;
 export const RADIUS = 8;
 
 const A3 = { width: 1190, height: 1684 };
-const pixelDensity = 2;
+const pixelDensity = 4;
 
 export default function FallingSandStyleTile() {
   const hasAdjustedCanvasSize = useRef<boolean>(false);
   let dpr = useRef<number>(1);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const currentParticleType = useRef(Sand);
@@ -33,28 +33,28 @@ export default function FallingSandStyleTile() {
     if (titleRef.current) {
       if (canvas && !hasAdjustedCanvasSize.current) {
         dpr.current = window.devicePixelRatio || 1;
-  
+
 
         canvas.width = titleRef.current.naturalWidth * pixelDensity;
         canvas.height = titleRef.current.naturalHeight * pixelDensity;
-  
+
         ctxRef.current = canvasRef.current!.getContext("2d");
         if (ctxRef.current) {
           ctxRef.current.scale(pixelDensity, pixelDensity); // High PPI
         }
-  
+
         // Adjust CSS Size to maintain layout size
         // This maintains the aspect ratio and ensures the canvas is fully visible
         canvas.style.width = "100%";
         canvas.style.height = "100%";
         canvas.style.objectFit = "contain";
-        canvas.style.maxWidth = `${A3.width}px`;
-        canvas.style.maxHeight = `${A3.height}px`;
-  
+        // canvas.style.maxWidth = `${A3.width}px`;
+        // canvas.style.maxHeight = `${A3.height}px`;
+
         // Mark canvas adjustment and run setup function
         hasAdjustedCanvasSize.current = true;
         setup();
-  
+
       }
     }
   }, [])
@@ -148,15 +148,28 @@ export default function FallingSandStyleTile() {
 
   const downloadCanvas = () => {
     if (!canvasRef.current) return;
-    // markTextOnGrid();
 
-    const dataUrl = canvasRef.current.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.download = "canvas-image.png";
-    link.href = dataUrl;
-    containerRef.current!.appendChild(link);
-    link.click();
-    containerRef.current!.removeChild(link);
+    // Create temporary canvas
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = canvasRef.current.width;
+    tempCanvas.height = canvasRef.current.height;
+
+    console.log(tempCanvas.width, tempCanvas.height);
+
+    // Ensure the context and the original canvas are available
+    if (tempCtx && canvasRef.current) {
+      tempCtx.drawImage(canvasRef.current, 0, 0, tempCanvas.width, tempCanvas.height);
+
+      const dataUrl = tempCanvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.download = "canvas-image.png";
+      link.href = dataUrl;
+      containerRef.current!.appendChild(link);
+      link.click();
+      containerRef.current!.removeChild(link);
+    }
+
   }
 
   return (
