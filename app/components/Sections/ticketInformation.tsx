@@ -44,8 +44,13 @@ export default function TicketInformation({ content }: TicketInformationProps) {
               return (
                 <div key={key} className="flex flex-col justify-end">
                   <SeekingElement>
-                    <h3 className="text-white text-sm">{`${key}`}</h3>
-                    <p className="text-3xl">{`${value}`}</p>
+                    <motion.h3
+                      initial={{ fontSize: "0.875rem", fontWeight: 400 }}
+                      animate={{ fontSize: "0.875rem", fontWeight: 400 }}
+                      variants={{ hover: { fontSize: "2rem", fontWeight: 600 } }}
+                      transition={{ type: "spring", stiffness: 200, damping: 40 }}
+                      className="text-neutral-600 text-base lowercase leading-none">{`${key}`}</motion.h3>
+                    <motion.p className="text-3xl leading-none">{`${value}`}</motion.p>
                   </SeekingElement>
                 </div>
               )
@@ -66,12 +71,12 @@ function SeekingElement({ children }: SeekingElementProps) {
   const { x, y } = useFollowPointer(ref, 20);
 
   return (
-    <motion.div
+    <motion.div whileHover="hover"
       ref={ref}
       style={{ x, y }}
       transition={{ type: "spring", damping: 20, stiffness: 400 }}
-      className="flex flex-col justify-end gap-4"
-      >
+      className="flex flex-col justify-end gap-1"
+    >
       {children}
     </motion.div>
   )
