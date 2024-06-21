@@ -132,8 +132,8 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
                     transition={{ duration: 0.2 }}
                     className="min-h-dv my-16 w-full p-4 flex flex-col md:justify-center items-start gap-12"
                   >
-                    <div className="flex flex-col xl:flex-row justify-center items-center gap-16 overflow-auto">
-                      <div className="flex flex-col w-full lg:w-1/2 2xl:w-1/3">
+                    <div className="flex flex-col xl:w-full xl:flex-row justify-center items-center gap-16 overflow-auto">
+                      <div className="flex flex-col w-full lg:w-1/2">
                         {selectedTab ? selectedTab.articles.map((article, articleIndex) => (
                           <div key={article.title} className="flex flex-col 2xl:max-w-screen-md gap-2">
                             <h1 className="title-type text-4xl font-bold mb-4 md:mt-8"
