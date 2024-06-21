@@ -65,8 +65,8 @@ export default function SwipeImageGallery() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4 h-3/5 w-full bg-transparent">
-      <div className="relative min-h-full aspect-square max-w-screen-sm overflow-hidden">
+    <div className="flex flex-col justify-center items-center gap-4 h-full w-1/2 bg-transparent">
+      <div className="relative h-full mt-16 aspect-square max-w-screen-sm overflow-hidden">
         <motion.div
           drag="x"
           dragConstraints={{
@@ -119,7 +119,7 @@ const Images = ({ imgIndex }: { imgIndex: number }) => {
 }
 
 const Dots = ({ imgIndex, setImgIndex }: { imgIndex: number, setImgIndex: Dispatch<SetStateAction<number>> }) => {
-  return <div className="mt-4 flex w-full justify-center gap-2">
+  return <div className="mt-4 mb-8 flex w-full justify-center gap-2">
     {imgs.map((_, index) => {
       return <button
         key={index}

@@ -25,14 +25,14 @@ export default function StickyFooter({ contentData }: any) {
           }}>
           <div id="background" className="absolute -top-10 left-0 h-[200%] w-[120%] bg-black -z-10" />
           <div className="relative h-full flex flex-col justify-evenly items-center">
-            <div className="h-full flex flex-col justify-evenly items-center">
-              <div className="h-4/5 w-2/3 flex flex-row justify-center items-center overflow-hidden">
-                <div className="w-2/3 flex flex-col gap-16">
+            <div className="h-full hidden lg:flex flex-col justify-center items-center">
+              <div className="h-full xl:h-4/5 w-3/4 2xl:w-2/3 flex lg:gap-2 flex-col lg:flex-row justify-center items-center overflow-hidden">
+                <div className="w-full flex flex-col gap-16">
                   <div className="flex flex-col gap-2">
                     <h1 className="text-neutral-800 title-type text-xl leading-none">
                       Metropolis præsenterer
                     </h1>
-                    <h1 className="text-white title-type text-5xl mb-2 leading-none z-50">
+                    <h1 className="text-white title-type ~text-3xl/5xl mb-2 leading-none z-50 shrink-0 line-clamp-2 text-balance">
                       While In Battle I'm Free, Never Free To Rest
                     </h1>
                     <h1 className="text-neutral-700 title-type text-base justify-self-end leading-snug max-w-60">
@@ -41,8 +41,9 @@ export default function StickyFooter({ contentData }: any) {
                   </div>
                 </div>
                 <SwipeImageGallery />
-              </div></div>
-            <div className="w-4/5 h-0.5 rounded-full bg-neutral-500" />
+              </div>
+            </div>
+            <div className="hidden lg:block w-4/5 h-0.5 rounded-full bg-neutral-500" />
             <Content content={contentData} />
           </div>
         </div>

@@ -26,8 +26,8 @@ export default function TicketInformation({ content }: TicketInformationProps) {
 
   return (
     <>
-      <section className="h-1/3 w-full mb-4 text-primary-white">
-        <div className="title-type h-full flex flex-row justify-evenly items-center my-auto">
+      <section className="h-full lg:h-1/2 xl:h-1/3 w-full mb-4 text-primary-white flex justify-center lg:justify-evenly items-center">
+        <div className="title-type h-4/5 w-full flex flex-col justify-evenly lg:my-0 lg:flex-row lg:justify-evenly items-center my-auto">
           {contentEntries.map(([key, value]) => {
             if (key === 'callToAction') {
               return (
@@ -42,7 +42,7 @@ export default function TicketInformation({ content }: TicketInformationProps) {
               )
             } else {
               return (
-                <div key={key} className="flex flex-col justify-end">
+                <div key={key} className="flex flex-col justify-end h-32 py-12 lg:h-auto">
                   <SeekingElement>
                     <motion.h3
                       initial={{ fontSize: "0.875rem", fontWeight: 400 }}
