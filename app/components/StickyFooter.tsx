@@ -5,7 +5,7 @@ import SwipeImageGallery from "./SwipeImageGallery";
 export default function StickyFooter({ contentData }: any) {
   const footerHeight = 95;
   return (
-    <div className="overflow-visible"
+    <div className="overflow-clip"
       style={{
         position: 'relative',
         height: `${footerHeight}vh`,

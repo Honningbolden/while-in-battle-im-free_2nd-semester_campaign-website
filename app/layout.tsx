@@ -16,6 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/lpw3gsy.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       </head>
       <body className="overflow-visible">{children}</body>
     </html>
