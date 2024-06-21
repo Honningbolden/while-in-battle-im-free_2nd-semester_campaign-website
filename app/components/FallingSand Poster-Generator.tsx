@@ -46,8 +46,6 @@ export default function FallingSandPosterGenerator() {
       canvas.style.width = "100%";
       canvas.style.height = "100%";
       canvas.style.objectFit = "contain";
-      // canvas.style.maxWidth = `${A3.width}px`;
-      // canvas.style.maxHeight = `${A3.height}px`;
 
       // Mark canvas adjustment and run setup function
       hasAdjustedCanvasSize.current = true;
