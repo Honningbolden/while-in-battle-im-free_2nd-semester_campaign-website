@@ -112,7 +112,7 @@ export default function FallingSandOverlay() {
           x,
           y,
           () => new currentParticleType.current,
-          RADIUS, // radius
+          RADIUS,
           currentParticleType.current.addPropability
         );
       }
@@ -138,7 +138,9 @@ export default function FallingSandOverlay() {
       <div className="absolute top-0 left-0 h-full w-full z-50">
         <canvas className="z-50" ref={canvasRef}></canvas>
       </div>
-      <img ref={titleRef} src="/Title_ALT.svg" alt="While In Battle I'm Free, Never Free To Rest" className="z-50 w-1/3" />
+      <div className="z-50 flex justify-center shrink max-h-full ~xs/xl:~px-4/16">
+        <img ref={titleRef} src="/Title_ALT.svg" alt="While In Battle I'm Free, Never Free To Rest" className="~md/lg:~py-32/16" />
+      </div>
     </>
   )
 }

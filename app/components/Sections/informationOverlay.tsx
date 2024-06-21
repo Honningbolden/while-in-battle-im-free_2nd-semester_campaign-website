@@ -13,8 +13,9 @@ export default function InformationOverlay({ toggleOpen }: InformationOverlayPro
 
   return (
     <>
-      <div onClick={toggleOpen} className={`${styles.clippy} z-[200] overflow-hidden cursor-pointer h-[50vh] w-[100vh] absolute -top-0 -right-0 bg-primary-blue mix-blend-normal stroke-black stroke-2 hover:bg-blue-500 transition-colors`}>
-        <div className="absolute top-0 left-0 w-screen h-80 ">
+      {/* <div onClick={toggleOpen} className={`${styles.clippy} z-[200] overflow-hidden cursor-pointer h-[50vh] w-[100vh] absolute -top-0 -right-0 bg-primary-blue mix-blend-normal stroke-black stroke-2 hover:bg-blue-500 transition-colors`}> */}
+      <div onClick={toggleOpen} className={`${styles.clippy} z-[200] overflow-hidden cursor-pointer ~@sm/5xl:~h-64/96 aspect-video absolute -top-0 right-0 bg-primary-blue mix-blend-normal stroke-black stroke-2 hover:bg-blue-500 transition-colors`}>
+        <div className="absolute top-0 left-0 w-screen h-full ">
           <div className="body-text text-2xl text-primary-white gap-4 flex flex-col items-center justify-start">
             <ParallaxText baseVelocity={1} rows={1}>Læs mere</ParallaxText>
             <ParallaxText baseVelocity={-1} rows={1}>Læs mere</ParallaxText>
