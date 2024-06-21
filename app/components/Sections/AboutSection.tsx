@@ -33,7 +33,8 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
   const toggleOpen = () => setIsOpen(!isOpen);
   const [selectedTab, setSelectedTab] = useState(aboutContent[0]);
 
-  const [menuIsOpen, setMenuIsOpen] = useState(true);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const toggleMenu = () => setMenuIsOpen(!menuIsOpen);
 
   const toggleSection = (section: Section) => {
     setSelectedTab(section);
@@ -59,6 +60,26 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
     }
   }
 
+  const menuButtonVariants = {
+    initial: {
+      height: 0,
+      width: 0,
+      backgroundColor: "#ffffff",
+      boxShadow: "inset 0 0 0 30px #0024CC",
+      borderRadius: 50,
+    },
+    animate: {
+      height: 50,
+      width: 50,
+    },
+    hover: {
+      scale: 1.05,
+    },
+    tap: {
+      boxShadow: "inset 0 0 0 20px ##0024CC",
+    }
+  }
+
 
   return (
     <>
@@ -66,19 +87,22 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
       <AnimatePresence>
         {isOpen && (
           <div
-            className={`${styles.clippy} fixed z-[500] top-0 min-h-dvh w-dvw left-0 overflow-hidden`}>
-            <motion.div className='relative min-h-dvh w-full flex flex-col md:flex-row bg-white overflow-y-scroll' initial={{ y: 0.8, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }}>
-              <ul id='nav' className='md:relative h-screen top-0 z-50 flex flex-col items-center justify-center gap-4'>
+            className={`${styles.clippy} fixed z-[500] top-0 min-h-dvh w-dvw left-0`}>
+            <motion.div className='relative min-h-dvh w-full flex flex-col md:flex-row bg-white' initial={{ y: 0, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ opacity: 0 }}>
+              <ul id='nav' className={`${menuIsOpen ? "flex" : "hidden"} md:flex bg-white md:bg-transparent w-full md:w-auto absolute md:relative h-screen top-0 z-50 flex flex-col items-center justify-center gap-4`}>
                 {aboutContent.map((section, index) => (
                   <NavItem
                     key={index}
-                    callback={() => toggleSection(section)}
+                    callback={() => {
+                      toggleSection(section);
+                      toggleMenu();
+                    }}
                     active={section === selectedTab}
                     label={section.title}
                   />
                 ))}
               </ul>
-              <motion.div className="absolute top-0 left-0 m-2 md:m-8 z-50"
+              <motion.div id="close-button" className={`absolute top-0 left-0 m-2 md:m-8 z-50`}
                 onClick={toggleOpen}
                 variants={closeButtonVariants}
                 initial="initial"
@@ -87,7 +111,18 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
                 whileTap="tap"
                 transition={{ type: "spring", damping: 20, stiffness: 600 }}
               />
-              <div id="content" className="flex flex-col justify-start items-center w-full">
+
+              <motion.div id="menu-button" className={`${!menuIsOpen ?? "hidden"} md:hidden absolute top-0 right-0 m-2 md:m-8 z-50`}
+                onClick={toggleMenu}
+                variants={menuButtonVariants}
+                initial="initial"
+                animate="animate"
+                whileHover="hover"
+                whileTap="tap"
+                transition={{ type: "spring", damping: 20, stiffness: 600 }}
+              />
+
+              <div id="content" className="flex flex-col justify-start items-center w-full overflow-auto max-h-dvh">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={selectedTab ? selectedTab.title : "empty"}
@@ -95,9 +130,9 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -10, opacity: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="min-h-dvh w-full p-4 md:p-16 flex flex-col md:justify-center items-start gap-12"
+                    className="min-h-dv my-16 w-full p-4 flex flex-col md:justify-center items-start gap-12"
                   >
-                    <div className="flex flex-col xl:flex-row justify-center items-center gap-16">
+                    <div className="flex flex-col xl:flex-row justify-center items-center gap-16 overflow-auto">
                       <div className="flex flex-col w-full lg:w-1/2 2xl:w-1/3">
                         {selectedTab ? selectedTab.articles.map((article, articleIndex) => (
                           <div key={article.title} className="flex flex-col 2xl:max-w-screen-md gap-2">
