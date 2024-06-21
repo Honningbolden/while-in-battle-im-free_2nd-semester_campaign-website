@@ -15,14 +15,14 @@ export function useFollowPointer(ref: RefObject<HTMLElement>) {
 
     const element = ref.current;
 
-    const handlePointerMove = ({ pageX, pageY }: MouseEvent) => {
+    const handlePointerMove = ({ clientX, clientY }: MouseEvent) => {
       if (!element) return;
 
       const elementCenterX = element.offsetLeft + element.offsetWidth / 2;
       const elementCenterY = element.offsetTop + element.offsetHeight / 2;
 
-      const deltaX = pageX - elementCenterX;
-      const deltaY = pageY - elementCenterY;
+      const deltaX = clientX - elementCenterX;
+      const deltaY = clientY - elementCenterY;
       const dist = Math.sqrt(deltaX ** 2 + deltaY ** 2);
 
       console.log("dist", dist);

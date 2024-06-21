@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import NavItem from "../NavItem";
 
 interface TicketInformationProps {
   content: {
@@ -27,8 +28,8 @@ export default function TicketInformation({ content }: TicketInformationProps) {
           {contentEntries.map(([key, value]) => {
             if (key === 'callToAction') {
               return (
-                <div key={key}>
-                  <motion.button
+                <div key={key} className="m-0 aspect-video flex justify-center">
+                  {/* <motion.button
                     initial={{ borderRadius: 500 }}
                     whileHover={{ color: "#454545", backgroundColor: "#f3f3f3", borderRadius: 500 }}
                     transition={{
@@ -41,13 +42,17 @@ export default function TicketInformation({ content }: TicketInformationProps) {
                     onClick={() => redirectToTicketSite()}
                     className="h-20 px-12 py-4 body-text text-3xl text-primary-white bg-primary-blue rounded-full cursor-pointer select-none flex justify-start items-center">
                     <p>{value}</p>
-                  </motion.button>
+                  </motion.button> */}
+                  <NavItem
+                  callback={() => redirectToTicketSite}
+                  label={value}
+                  />
                 </div>
               )
             } else {
               return (
                 <div key={key} className="flex flex-col justify-end">
-                  <div className="flex flex-col justify-end gap-4 h-9">
+                  <div className="flex flex-col justify-end gap-4">
                     <h3 className="text-white text-sm">{`${key}`}</h3>
                     <p className="text-3xl">{`${value}`}</p>
                   </div>

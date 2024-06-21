@@ -73,7 +73,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
                 {aboutContent.map((section, index) => (
                   <NavItem
                   key={index}
-                  toggleSection={() => toggleSection(section)}
+                  callback={() => toggleSection(section)}
                   isSelected={section === selectedTab}
                   label={section.title}
                   />
