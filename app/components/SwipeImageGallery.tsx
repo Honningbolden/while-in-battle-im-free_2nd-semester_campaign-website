@@ -65,7 +65,7 @@ export default function SwipeImageGallery() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4 h-3/5 w-full bg-black">
+    <div className="flex flex-col justify-center items-center gap-4 h-3/5 w-full bg-transparent">
       <div className="relative min-h-full aspect-square max-w-screen-sm overflow-hidden">
         <motion.div
           drag="x"
