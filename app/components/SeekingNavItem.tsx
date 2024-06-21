@@ -4,36 +4,40 @@ import { useFollowPointer } from "../utilities/use-follow-pointer";
 import { useRef } from "react";
 import { motion } from "framer-motion";
 
-interface NavItemProps {
+interface SeekingNavItemProps {
   callback: () => void;
-  isSelected?: boolean;
+  active?: boolean;
+  reactiveScaling?: boolean;
+  maxDistance?: number;
+  scaleAmount?: number;
   label: string;
 }
 
-export default function NavItem({ callback, isSelected, label }: NavItemProps) {
+export default function SeekingNavItem({ callback, active, maxDistance = 50, label }: SeekingNavItemProps) {
   const ref = useRef(null);
-  const position = useFollowPointer(ref);
+  const { x, y } = useFollowPointer(ref, maxDistance);
 
   const navButtonVariants = {
     tap: {
       scale: 0.7,
+      filter: "saturate(110%) brightness(90%)",
     },
     hover: {
-      scale: 1,
-    },
+      scale: 0.9
+    }
   };
 
+
+
   return (
-    <motion.li drag dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+    <motion.li
+      drag dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
       ref={ref}
-      style={{
-        x: position.x,
-        y: position.y,
-      }}
+      style={{ x, y }}
       variants={navButtonVariants}
-      whileHover="hover"
       whileTap="tap"
-      animate={{ backgroundColor: isSelected ? "#ffffff00" : "#0024cc", color: isSelected ? "#000000" : "#ffffff", scale: isSelected ? 1 : 0.7 }}
+      whileHover="hover"
+      animate={{ backgroundColor: active ? "#ffffff00" : "#0024cc", color: active ? "#000000" : "#ffffff", scale: active ? 1 : 0.7 }}
       transition={{ type: "spring", damping: 20, stiffness: 400 }}
       className={`cursor-pointer size-48 rounded-full flex justify-center items-center text-center`}
       onClick={callback}>

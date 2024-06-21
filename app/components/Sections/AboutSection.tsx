@@ -1,6 +1,6 @@
 "use client"
 
-import NavItem from "../NavItem";
+import NavItem from "../SeekingNavItem";
 import styles from "@/app/styles/AboutSection.module.css"
 import { useFollowPointer } from "@/app/utilities/use-follow-pointer";
 import { motion, AnimatePresence, MotionValue } from "framer-motion";
@@ -74,7 +74,7 @@ export default function AboutSection({ aboutContent }: AboutSectionProps) {
                   <NavItem
                   key={index}
                   callback={() => toggleSection(section)}
-                  isSelected={section === selectedTab}
+                  active={section === selectedTab}
                   label={section.title}
                   />
                 ))}
