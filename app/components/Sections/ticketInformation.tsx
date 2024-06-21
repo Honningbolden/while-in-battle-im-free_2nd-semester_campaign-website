@@ -29,20 +29,6 @@ export default function TicketInformation({ content }: TicketInformationProps) {
             if (key === 'callToAction') {
               return (
                 <div key={key} className="m-0 aspect-video flex justify-center">
-                  {/* <motion.button
-                    initial={{ borderRadius: 500 }}
-                    whileHover={{ color: "#454545", backgroundColor: "#f3f3f3", borderRadius: 500 }}
-                    transition={{
-                      duration: 0.1,
-                      type: "spring",
-                      damping: 80,
-                      stiffness: 400,
-                      restDelta: 0.1,
-                    }}
-                    onClick={() => redirectToTicketSite()}
-                    className="h-20 px-12 py-4 body-text text-3xl text-primary-white bg-primary-blue rounded-full cursor-pointer select-none flex justify-start items-center">
-                    <p>{value}</p>
-                  </motion.button> */}
                   <NavItem
                   callback={() => redirectToTicketSite}
                   label={value}
@@ -64,4 +50,8 @@ export default function TicketInformation({ content }: TicketInformationProps) {
       </section>
     </>
   )
+}
+
+const InformationItem = () => {
+  
 }
