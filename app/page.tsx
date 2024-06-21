@@ -4,7 +4,7 @@ import TeaserDescription from "./components/Sections/teaserDescription";
 import AboutSection from "./components/Sections/AboutSection";
 import ParallaxBackground from "./components/ParallaxBackground";
 import StickyFooter from "./components/StickyFooter";
-import SwipeImageGallery from "./components/SwipeImageGallery";
+import SwipeImageGallery from "./components/SwipeImageGallery_SHIT";
 
 async function fetchContentJSON() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;

@@ -26,7 +26,7 @@ export default function StickyFooter({ contentData }: any) {
           }}>
           <div id="background" className="absolute -top-10 left-0 h-[200%] w-[120%] bg-black -z-10" />
           <div id="test" className="h-full flex flex-col justify-evenly items-center">
-            <div className="h-4/5 w-2/3 flex flex-row justify-center items-center">
+            <div className="h-4/5 w-2/3 flex flex-row justify-center items-center overflow-hidden">
               <div className="w-2/3">
                 <h1 className="text-neutral-800 title-type text-xl">
                   Metropolis præsenterer
