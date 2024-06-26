@@ -101,13 +101,13 @@ export default function FallingSandOverlay() {
 
     if (titleRef) markTextOnGrid();
 
-    const handleMouseMove = (event: MouseEvent) => {
+    const handlePointerMove = (x: number, y: number) => {
       if (!canvasRef.current) return;
 
       let rect = canvasRef.current!.getBoundingClientRect();
-      if (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) {
-        let x = Math.round((event.clientX - rect.left) / (RESOLUTION));
-        let y = Math.round((event.clientY - rect.top) / (RESOLUTION));
+      x = Math.round((x - rect.left) / RESOLUTION);
+      y = Math.round((y - rect.top) / RESOLUTION);
+      if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
         gridRef.current!.setCircle(
           x,
           y,
@@ -118,7 +118,27 @@ export default function FallingSandOverlay() {
       }
     };
 
+    const handleMouseMove = (event: MouseEvent) => {
+      handlePointerMove(event.clientX, event.clientY);
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      const touch = event.touches[0];
+
+      if (!canvasRef.current) return;
+
+      const rect = canvasRef.current.getBoundingClientRect();
+
+      const touchYRelativeToCanvas = touch.clientY - rect.top;
+
+      if (touchYRelativeToCanvas < (canvasRef.current.height / 3 * 2)) {
+        event.preventDefault();
+        handlePointerMove(touch.clientX, touch.clientY);
+      }
+    }
     document.addEventListener("mousemove", handleMouseMove);
+    canvasRef.current?.addEventListener("touchmove", handleTouchMove, { passive: false });
+    canvasRef.current?.addEventListener("touchstart", handleTouchMove, { passive: false });
 
     draw();
   };
@@ -139,7 +159,7 @@ export default function FallingSandOverlay() {
         <canvas className="z-50" ref={canvasRef}></canvas>
       </div>
       <div className="z-50 flex justify-center shrink max-h-full ~xs/xl:~px-4/16">
-        <img ref={titleRef} src="/Title_ALT.svg" alt="While In Battle I'm Free, Never Free To Rest"  />
+        <img ref={titleRef} src="/Title_ALT.svg" alt="While In Battle I'm Free, Never Free To Rest" />
       </div>
     </>
   )
