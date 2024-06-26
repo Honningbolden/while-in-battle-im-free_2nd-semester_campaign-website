@@ -139,7 +139,7 @@ export default function FallingSandOverlay() {
         <canvas className="z-50" ref={canvasRef}></canvas>
       </div>
       <div className="z-50 flex justify-center shrink max-h-full ~xs/xl:~px-4/16">
-        <img ref={titleRef} src="/Title_ALT.svg" alt="While In Battle I'm Free, Never Free To Rest" className="~md/lg:~py-32/16" />
+        <img ref={titleRef} src="/Title_ALT.svg" alt="While In Battle I'm Free, Never Free To Rest"  />
       </div>
     </>
   )
