@@ -4,6 +4,7 @@ import TeaserDescription from './components/Sections/teaserDescription';
 import AboutSection from './components/Sections/AboutSection';
 import ParallaxBackground from './components/ParallaxBackground';
 import StickyFooter from './components/StickyFooter';
+import contentJSON from '@/public/cms/content.json';
 
 async function fetchContentJSON() {
   try {
@@ -19,7 +20,7 @@ async function fetchContentJSON() {
 }
 
 export default async function Home() {
-  const { ticketInformation, aboutContent } = await fetchContentJSON();
+  const { ticketInformation, aboutContent } = contentJSON;
 
   return (
     <>
